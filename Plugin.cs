@@ -131,7 +131,7 @@ namespace BerryLoaderNS
 					var tex = new Texture2D(1024, 1024); // TODO: size
 					tex.LoadImage(File.ReadAllBytes(Path.Combine(modDir, "Images", modcard.icon)));
 					card.Icon = Sprite.Create(tex, wood.Icon.rect, wood.Icon.pivot);
-					card.MyCardType = CardType.Resources; // TODO: uhhhh
+					card.MyCardType = EnumHelper.ToCardType(modcard.type);
 					card.MyGameCard = MonoBehaviour.Instantiate(__instance.GameCardPrefab);
 					card.MyGameCard.gameObject.SetActive(false); // deactivate it so Start() methods dont get called on next frame
 					card.gameObject.SetActive(false);
@@ -157,10 +157,10 @@ namespace BerryLoaderNS
 					bpinst.gameObject.SetActive(false);
 					ModOverride mo = bpinst.gameObject.AddComponent<ModOverride>();
 					mo.Name = modblueprint.name;
-					// mo.Description = modblueprint.description; // description doesnt exist in modblueprint (for now?)
+					// mo.Description = modblueprint.description; // what does desc do here?
 					bp.Id = modblueprint.id;
 					// texture! which is 512x for some reason???
-					bp.BlueprintGroup = BlueprintGroup.Cooking; // TODO: uhhhh
+					bp.BlueprintGroup = EnumHelper.ToBlueprintGroup(modblueprint.group); // TODO: uhhhh
 					bp.StackPostText = modblueprint.stackText;
 					bp.Subprints = new List<Subprint>();
 					foreach (ModSubprint ms in modblueprint.subprints)
@@ -230,9 +230,9 @@ namespace BerryLoaderNS
 					foreach (var cb in modbooster.cardBags)
 					{
 						var cardbag = new CardBag();
-						cardbag.CardBagType = CardBagType.Chances; // TODO: enummy :(
+						cardbag.CardBagType = EnumHelper.ToCardBagType(cb.type);
 						cardbag.CardsInPack = cb.cards;
-						cardbag.SetCardBag = SetCardBag.BasicResources; // TODO: enummy :(
+						cardbag.SetCardBag = EnumHelper.ToSetCardBag(cb.setCardBag);
 						cardbag.SetPackCards = new List<string>(); // ???
 						cardbag.Chances = new List<CardChance>();
 						foreach (var chance in cb.chances)
