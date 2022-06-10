@@ -6,48 +6,48 @@ using System;
 
 namespace BerryLoaderNS
 {
-    public static class Dumper
-    {
-        public static void DumpTextures()
-        {
-            BerryLoader.L.LogInfo("dumping textures..");
-            foreach (var cd in WorldManager.instance.CardDataPrefabs)
-            {
-                BerryLoader.L.LogInfo($"dumping {cd.Id}.png");
-                if (cd.Icon != null)
-                {
-                    var tx = duplicateTexture(cd.Icon.texture);
-                    File.WriteAllBytes(Path.Combine(BerryLoader.berryDir, "dumps", $"{cd.Id}.png"), tx.EncodeToPNG());
-                }
-                else
-                    BerryLoader.L.LogInfo($"no texture found for {cd.Id}");
-            }
-            BerryLoader.L.LogInfo("finished dumping");
-        }
+	public static class Dumper
+	{
+		public static void DumpTextures()
+		{
+			BerryLoader.L.LogInfo("dumping textures..");
+			foreach (var cd in WorldManager.instance.CardDataPrefabs)
+			{
+				BerryLoader.L.LogInfo($"dumping {cd.Id}.png");
+				if (cd.Icon != null)
+				{
+					var tx = duplicateTexture(cd.Icon.texture);
+					File.WriteAllBytes(Path.Combine(BerryLoader.berryDir, "dumps", $"{cd.Id}.png"), tx.EncodeToPNG());
+				}
+				else
+					BerryLoader.L.LogInfo($"no texture found for {cd.Id}");
+			}
+			BerryLoader.L.LogInfo("finished dumping");
+		}
 
-        // https://stackoverflow.com/a/44734346
-        public static Texture2D duplicateTexture(Texture2D source)
-        {
-            RenderTexture renderTex = RenderTexture.GetTemporary(
-                        source.width,
-                        source.height,
-                        0,
-                        RenderTextureFormat.Default,
-                        RenderTextureReadWrite.Linear);
+		// https://stackoverflow.com/a/44734346
+		public static Texture2D duplicateTexture(Texture2D source)
+		{
+			RenderTexture renderTex = RenderTexture.GetTemporary(
+						source.width,
+						source.height,
+						0,
+						RenderTextureFormat.Default,
+						RenderTextureReadWrite.Linear);
 
-            Graphics.Blit(source, renderTex);
-            RenderTexture previous = RenderTexture.active;
-            RenderTexture.active = renderTex;
-            Texture2D readableText = new Texture2D(source.width, source.height);
-            readableText.ReadPixels(new Rect(0, 0, renderTex.width, renderTex.height), 0, 0);
-            readableText.Apply();
-            RenderTexture.active = previous;
-            RenderTexture.ReleaseTemporary(renderTex);
-            return readableText;
-        }
+			Graphics.Blit(source, renderTex);
+			RenderTexture previous = RenderTexture.active;
+			RenderTexture.active = renderTex;
+			Texture2D readableText = new Texture2D(source.width, source.height);
+			readableText.ReadPixels(new Rect(0, 0, renderTex.width, renderTex.height), 0, 0);
+			readableText.Apply();
+			RenderTexture.active = previous;
+			RenderTexture.ReleaseTemporary(renderTex);
+			return readableText;
+		}
 
 
-        /*foreach (var booster in WorldManager.instance.BoosterPackPrefabs)
+		/*foreach (var booster in WorldManager.instance.BoosterPackPrefabs)
         {
             JObject b = new JObject();
             b["name"] = booster.Name;
@@ -84,5 +84,5 @@ namespace BerryLoaderNS
             b["cardBags"] = c;
             print(b.ToString());
         }*/
-    }
+	}
 }

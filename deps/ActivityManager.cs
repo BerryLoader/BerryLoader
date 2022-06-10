@@ -2,11 +2,11 @@
 
 namespace Discord
 {
-    public partial class ActivityManager
-    {
-        public void RegisterCommand()
-        {
-            RegisterCommand(null);
-        }
-    }
+	public partial class ActivityManager
+	{
+		public void RegisterCommand()
+		{
+			RegisterCommand(null);
+		}
+	}
 }
