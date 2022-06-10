@@ -1,5 +1,5 @@
 bin/
 obj/
-Assembly-CSharp-firstpass.dll
-Assembly-CSharp.dll
-Unity.TextMeshPro.dll
+dlls/Assembly-CSharp-firstpass.dll
+dlls/Assembly-CSharp.dll
+dlls/Unity.TextMeshPro.dll

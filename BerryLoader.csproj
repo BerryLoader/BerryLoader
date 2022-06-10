@@ -17,23 +17,23 @@
 
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
-      <HintPath>/Assembly-CSharp.dll</HintPath>
+      <HintPath>/dlls/Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>/Assembly-CSharp-firstpass.dll</HintPath>
+      <HintPath>/dlls/Assembly-CSharp-firstpass.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>/Newtonsoft.Json.dll</HintPath>
+      <HintPath>/dlls/Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>/dlls/Unity.TextMeshPro.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="discord_game_sdk">
-      <HintPath>/discord_game_sdk.dll</HintPath>
+      <HintPath>/dlls/discord_game_sdk.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
