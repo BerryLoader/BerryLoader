@@ -32,12 +32,17 @@ namespace BerryLoaderNS
 			return true;
 		}
 
-		// doing a postfix patch here because i cba to get this working properly yet
-		/*[HarmonyPatch(typeof(Subprint), "StatusName", MethodType.Getter)]
-		[HarmonyPostfix]
-		static void StatusOverride(Subprint __instance, ref string __result)
+		// dumbest patch in the entire codebase. should be replaced with proper localization
+		[HarmonyPatch(typeof(Subprint), "StatusName", MethodType.Getter)]
+		[HarmonyPrefix]
+		public static bool StatusOverride(Subprint __instance, ref string __result)
 		{
-			BerryLoader.L.LogInfo(__result);
-		}*/
+			if (!SokLoc.instance.CurrentLocSet.ContainsTerm(__instance.StatusTerm))
+			{
+				__result = __instance.StatusTerm;
+				return false;
+			}
+			return true;
+		}
 	}
 }

@@ -171,9 +171,7 @@ namespace BerryLoaderNS
 						sp.CardsToRemove = ms.cardsToRemove.Split(',').Select(str => str.Trim()).ToArray();
 						sp.ResultCard = ms.resultCard;
 						sp.Time = ms.time;
-						//sp.StatusTerm = ms.status; // TODO: override here
-						//sp.status = ms.status;
-						// sp.StatusTerm = ms.statusTerm; //??? oh translation; should have override
+						sp.StatusTerm = ms.status;
 						// sp.ExtraResultCards = ms.extraResultCards //?? check modsubprint
 						bp.Subprints.Add(sp);
 					}
