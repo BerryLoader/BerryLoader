@@ -128,7 +128,7 @@ namespace BerryLoaderNS
 					mo.Name = modcard.name;
 					mo.Description = modcard.description;
 					card.Value = modcard.value;
-					var tex = new Texture2D(1024, 1024); // TODO: size
+					var tex = new Texture2D(1024, 1024); // TODO: size?
 					tex.LoadImage(File.ReadAllBytes(Path.Combine(modDir, "Images", modcard.icon)));
 					card.Icon = Sprite.Create(tex, wood.Icon.rect, wood.Icon.pivot);
 					card.MyCardType = EnumHelper.ToCardType(modcard.type);
@@ -158,9 +158,11 @@ namespace BerryLoaderNS
 					bpinst.gameObject.SetActive(false);
 					ModOverride mo = bpinst.gameObject.AddComponent<ModOverride>();
 					mo.Name = modblueprint.name;
-					// mo.Description = modblueprint.description; // what does desc do here? nothing lmao
 					bp.Id = modblueprint.id;
 					// texture! which is 512x for some reason???
+					var tex = new Texture2D(512, 512); // TODO: size?
+					tex.LoadImage(File.ReadAllBytes(Path.Combine(modDir, "Images", modblueprint.icon)));
+					bp.Icon = Sprite.Create(tex, wood.Icon.rect, wood.Icon.pivot);
 					bp.BlueprintGroup = EnumHelper.ToBlueprintGroup(modblueprint.group);
 					bp.StackPostText = modblueprint.stackText;
 					bp.Subprints = new List<Subprint>();
@@ -302,6 +304,8 @@ namespace BerryLoaderNS
 			__instance.FoundCard(card);
 			if (card.MyCardType == CardType.Ideas && (UnityEngine.Object)GameScreen.instance != (UnityEngine.Object)null)
 				GameScreen.instance.UpdateIdeasLog();
+			if (card.gameObject.GetComponent<ModOverride>() != null && card.gameObject.GetComponent<Blueprint>() != null)
+				card.gameObject.GetComponent<ModOverride>().Description = card.gameObject.GetComponent<Blueprint>().GetText();
 			if (idToScript.ContainsKey(cardDataPrefab.Id))
 			{
 				tempCurrentGameCard = newCard;
@@ -309,8 +313,6 @@ namespace BerryLoaderNS
 				Destroy(newCard);
 				card.MyGameCard = (GameCard)newCard.gameObject.GetComponent(idToScript[cardDataPrefab.Id]);
 				// copy props here?
-				//__result = card;
-				//return false;
 			}
 			__result = card;
 			return false;
