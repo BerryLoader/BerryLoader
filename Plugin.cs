@@ -227,6 +227,9 @@ namespace BerryLoaderNS
 					*/
 					ModOverride mo = bpinst.gameObject.AddComponent<ModOverride>();
 					mo.Name = modbooster.name;
+					var tex = new Texture2D(1024, 1024); // TODO: size?
+					tex.LoadImage(File.ReadAllBytes(Path.Combine(modDir, "Images", modbooster.icon)));
+					bpinst.BoosterpackIcon = Sprite.Create(tex, humble.BoosterpackIcon.rect, humble.BoosterpackIcon.pivot);
 					bpinst.BoosterId = modbooster.id;
 					bpinst.MinAchievementCount = modbooster.minAchievementCount;
 					bpinst.CardBags.Clear();

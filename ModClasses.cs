@@ -67,6 +67,7 @@ namespace BerryLoaderNS
 	{
 		public string id;
 		public string name;
+		public string icon;
 		public int minAchievementCount;
 		public int cost;
 		public List<ModCardBag> cardBags;
