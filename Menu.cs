@@ -36,8 +36,6 @@ namespace BerryLoaderNS
 
 		public CustomButton dumpTexturesButton;
 
-		public RectTransform TestScreen;
-
 		public void Start()
 		{
 			BerryLoader.L.LogInfo("initing screen..");
@@ -50,10 +48,7 @@ namespace BerryLoaderNS
 
 			var parent = ModOptionsScreen.GetChild(0).GetChild(1);
 
-			menuButton = MenuAPI.CreateButton(GameCanvas.instance.MainMenuScreen.GetChild(0).GetChild(5), "Mod Options", (() =>
-			{
-				GameCanvas.instance.SetScreen(ModOptionsScreen);
-			}));
+			menuButton = MenuAPI.CreateButton(GameCanvas.instance.MainMenuScreen.GetChild(0).GetChild(5), "Mod Options", ModOptionsScreen);
 			menuButton.transform.SetSiblingIndex(6);
 
 			skipIntroButton = MenuAPI.CreateConfigButton(parent, "Skip Intro", BerryLoader.configSkipIntro);
@@ -64,36 +59,18 @@ namespace BerryLoaderNS
 
 			dumpTexturesButton = MenuAPI.CreateButton(parent, "Dump Textures", (() =>
 			{
-				// TODO: since updated text doesnt get rendered, this should use a modal
-				dumpTexturesButton.GetComponentInChildren<TextMeshProUGUI>().text = "Dumping textures..";
-				BerryLoaderNS.Dumper.DumpTextures();
-				dumpTexturesButton.GetComponentInChildren<TextMeshProUGUI>().text = "Dump textures";
+				ModalScreen.instance.Clear();
+				ModalScreen.instance.SetTexts("Dump Textures", "PLEASE DO NOT DISTRIBUTE ANY DUMPED ASSETS\n\nNote: Your game will lag for a bit. Check logs for more information.");
+				ModalScreen.instance.AddOption("Dump", (() => { GameCanvas.instance.CloseModal(); BerryLoaderNS.Dumper.DumpTextures(); }));
+				ModalScreen.instance.AddOption("Cancel", (() => { GameCanvas.instance.CloseModal(); }));
+				GameCanvas.instance.OpenModal();
 			}));
 
 			MenuAPI.CreateSpacer(parent);
 
-			MenuAPI.CreateButton(parent, "Back", (() =>
-			{
-				GameCanvas.instance.SetScreen(GameCanvas.instance.MainMenuScreen);
-			}));
+			MenuAPI.CreateButton(parent, "Back", GameCanvas.instance.MainMenuScreen);
 
 			BerryLoader.ModOptionsScreen = ModOptionsScreen;
-
-			TestScreen = MenuAPI.CreateScreen("Load Save");
-			var p = TestScreen.GetChild(0).GetChild(1);
-			MenuAPI.CreateButton(p, "Vanilla (Moon 14)", (() => { }));
-			MenuAPI.CreateButton(p, "Modded Campaign (Moon 3)", (() => { }));
-			MenuAPI.CreateButton(p, "IMPOSSIBLE MODE (Moon 50)", (() => { }));
-			MenuAPI.CreateSpacer(p);
-			MenuAPI.CreateButton(p, "Back", (() =>
-			{
-				GameCanvas.instance.SetScreen(GameCanvas.instance.MainMenuScreen);
-			}));
-
-			MenuAPI.CreateButton(parent, "Test", (() =>
-			{
-				GameCanvas.instance.SetScreen(TestScreen);
-			}));
 		}
 	}
 }

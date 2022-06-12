@@ -46,6 +46,15 @@ namespace BerryLoaderNS
 			return button;
 		}
 
+		public static CustomButton CreateButton(Transform parent, string text, RectTransform screen)
+		{
+			var button = MonoBehaviour.Instantiate(buttonPrefab, parent);
+			MonoBehaviour.Destroy(button.transform.GetChild(0).GetComponent<LocSetter>());
+			button.GetComponentInChildren<TextMeshProUGUI>().text = text;
+			button.Clicked += (() => { GameCanvas.instance.SetScreen(screen); });
+			return button;
+		}
+
 		public static CustomButton CreateConfigButton(Transform parent, string text, ConfigEntry<bool> config)
 		{
 			CustomButton button = null; // init as null so its usable in callback
