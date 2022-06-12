@@ -39,7 +39,7 @@ namespace BerryLoaderNS
 
 		public static void CopyCardDataProps(CardData modcarddata, CardData original)
 		{
-			var copyProps = "Name Id Description PickupSound UniqueId ParentUniqueId Value Icon MyGameCard IsFoil MyCardType IsBuilding IsCookedFood".Split(' ');
+			var copyProps = "Id PickupSound UniqueId ParentUniqueId Value Icon MyGameCard IsFoil MyCardType IsBuilding IsCookedFood".Split(' ');
 			foreach (var prop in copyProps)
 			{
 				var field = typeof(CardData).GetField(prop, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);

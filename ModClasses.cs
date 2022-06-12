@@ -60,7 +60,7 @@ namespace BerryLoaderNS
 		public string resultCard;
 		public string extraResultCards; //?? confusing? doesnt seem to do anything useful but yet it does??
 		public float time;
-		public string statusTerm; //?? doesnt exist ?? (actually its translation thing)
+		public string status; // translation
 	}
 
 	public class ModBoosterpack
@@ -74,7 +74,7 @@ namespace BerryLoaderNS
 
 	public class ModCardBag
 	{
-		public string type; // uhhhh enum :(
+		public string type;
 		public int cards;
 		public string setCardBag; // ??
 		public List<ModCardChance> chances;

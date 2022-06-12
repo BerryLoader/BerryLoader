@@ -122,7 +122,7 @@ namespace BerryLoaderNS
 
 					var inst = MonoBehaviour.Instantiate(wood.gameObject);
 					CardData card = inst.GetComponent<CardData>();
-					card.StartCoroutine(ResourceHelper.GetAudioClip(card, modcard.audio));
+					card.StartCoroutine(ResourceHelper.GetAudioClip(card, Path.Combine(modDir, "Sounds", modcard.audio)));
 					card.Id = modcard.id;
 					ModOverride mo = card.gameObject.AddComponent<ModOverride>();
 					mo.Name = modcard.name;
@@ -142,6 +142,7 @@ namespace BerryLoaderNS
 						DestroyImmediate(card);
 						BerryLoader.CardDataInjectables.Add(inst.GetComponent<CardData>());
 						((CardData)inst.GetComponent(modTypes[modcard.cardDataScript])).gameObject.SetActive(true);
+						((MonoBehaviour)inst.GetComponent(modTypes[modcard.cardDataScript])).StartCoroutine(ResourceHelper.GetAudioClip((CardData)inst.GetComponent(modTypes[modcard.cardDataScript]), Path.Combine(modDir, "Sounds", modcard.audio)));
 					}
 					else
 						BerryLoader.CardDataInjectables.Add(card);
@@ -157,10 +158,10 @@ namespace BerryLoaderNS
 					bpinst.gameObject.SetActive(false);
 					ModOverride mo = bpinst.gameObject.AddComponent<ModOverride>();
 					mo.Name = modblueprint.name;
-					// mo.Description = modblueprint.description; // what does desc do here?
+					// mo.Description = modblueprint.description; // what does desc do here? nothing lmao
 					bp.Id = modblueprint.id;
 					// texture! which is 512x for some reason???
-					bp.BlueprintGroup = EnumHelper.ToBlueprintGroup(modblueprint.group); // TODO: uhhhh
+					bp.BlueprintGroup = EnumHelper.ToBlueprintGroup(modblueprint.group);
 					bp.StackPostText = modblueprint.stackText;
 					bp.Subprints = new List<Subprint>();
 					foreach (ModSubprint ms in modblueprint.subprints)
@@ -170,6 +171,8 @@ namespace BerryLoaderNS
 						sp.CardsToRemove = ms.cardsToRemove.Split(',').Select(str => str.Trim()).ToArray();
 						sp.ResultCard = ms.resultCard;
 						sp.Time = ms.time;
+						//sp.StatusTerm = ms.status; // TODO: override here
+						//sp.status = ms.status;
 						// sp.StatusTerm = ms.statusTerm; //??? oh translation; should have override
 						// sp.ExtraResultCards = ms.extraResultCards //?? check modsubprint
 						bp.Subprints.Add(sp);

@@ -4,6 +4,7 @@ namespace BerryLoaderNS
 {
 	public static partial class Patches
 	{
+		// TODO: implement translation system here!
 		[HarmonyPatch(typeof(Boosterpack), "Name", MethodType.Getter)]
 		[HarmonyPatch(typeof(CardData), "Name", MethodType.Getter)]
 		[HarmonyPrefix]
@@ -30,5 +31,13 @@ namespace BerryLoaderNS
 			}
 			return true;
 		}
+
+		// doing a postfix patch here because i cba to get this working properly yet
+		/*[HarmonyPatch(typeof(Subprint), "StatusName", MethodType.Getter)]
+		[HarmonyPostfix]
+		static void StatusOverride(Subprint __instance, ref string __result)
+		{
+			BerryLoader.L.LogInfo(__result);
+		}*/
 	}
 }

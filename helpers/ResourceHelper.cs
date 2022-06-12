@@ -7,15 +7,16 @@ namespace BerryLoaderNS
 {
 	public static class ResourceHelper
 	{
-		public static IEnumerator GetAudioClip(CardData card, string name)
+		public static IEnumerator GetAudioClip(CardData card, string path)
 		{
-			using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(Path.Combine(Directory.GetCurrentDirectory(), "BepInEx/plugins/BerryLoader/Sounds", name), AudioType.MPEG))
+			using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(path, AudioType.MPEG))
 			{
+				www.timeout = 3;
 				yield return www.SendWebRequest();
 
 				if (www.result == UnityWebRequest.Result.ConnectionError)
 				{
-					BerryLoader.L.LogError(www.error);
+					BerryLoader.L.LogError($"error while loading audio: {www.error}");
 				}
 				else
 				{
