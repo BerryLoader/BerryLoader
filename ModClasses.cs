@@ -77,7 +77,7 @@ namespace BerryLoaderNS
 	{
 		public string type;
 		public int cards;
-		public string setCardBag; // ??
+		public string setCardBag;
 		public List<ModCardChance> chances;
 	}
 

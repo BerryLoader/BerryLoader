@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using UnityEngine;
 using System.Collections;
 using System.Linq;
@@ -36,6 +38,47 @@ namespace BerryLoaderNS
 			BerryLoader.L.LogInfo("finished dumping");
 		}
 
+		public static void DumpBoosters()
+		{
+			foreach (var booster in WorldManager.instance.BoosterPackPrefabs)
+			{
+				BerryLoader.L.LogInfo($"dumping {booster.Name}");
+				JObject b = new JObject();
+				b["name"] = booster.Name;
+				b["id"] = booster.BoosterId;
+				b["minAchievementCount"] = booster.MinAchievementCount;
+				JArray c = new JArray();
+				foreach (CardBag cardBag in booster.CardBags)
+				{
+					JObject bag = new JObject();
+					bag["type"] = cardBag.CardBagType.ToString();
+					bag["cardsInPack"] = cardBag.CardsInPack;
+					bag["setCardBag"] = cardBag.SetCardBag.ToString();
+					JArray chances = new JArray();
+					JArray setPackCards = new JArray();
+					foreach (CardChance cardChance in cardBag.Chances)
+					{
+						JObject cc = new JObject();
+						cc["id"] = cardChance.Id;
+						cc["chance"] = cardChance.Chance;
+						cc["hasMaxCount"] = cardChance.HasMaxCount;
+						cc["maxCountToGive"] = cardChance.MaxCountToGive;
+						cc["prerequisiteCardId"] = cardChance.PrerequisiteCardId;
+						chances.Add(cc);
+					}
+					foreach (string s in cardBag.SetPackCards)
+					{
+						setPackCards.Add(s);
+					}
+					bag["chances"] = chances;
+					bag["setPackCards"] = setPackCards;
+					c.Add(bag);
+				}
+				b["cardBags"] = c;
+				BerryLoader.L.LogInfo(b.ToString());
+			}
+		}
+
 		// https://stackoverflow.com/a/44734346
 		public static Texture2D duplicateTexture(Texture2D source)
 		{
@@ -56,44 +99,5 @@ namespace BerryLoaderNS
 			RenderTexture.ReleaseTemporary(renderTex);
 			return readableText;
 		}
-
-
-		/*foreach (var booster in WorldManager.instance.BoosterPackPrefabs)
-        {
-            JObject b = new JObject();
-            b["name"] = booster.Name;
-            b["id"] = booster.BoosterId;
-            // b["description"] = booster.Description; // seems to be empty?
-            b["minAchievementCount"] = booster.MinAchievementCount;
-            JArray c = new JArray();
-            foreach (CardBag cardBag in booster.CardBags)
-            {
-                JObject bag = new JObject();
-                bag["type"] = cardBag.CardBagType.ToString();
-                bag["cardsInPack"] = cardBag.CardsInPack;
-                bag["setCardBag"] = cardBag.SetCardBag.ToString();
-                JArray chances = new JArray();
-                JArray setPackCards = new JArray();
-                foreach (CardChance cardChance in cardBag.Chances)
-                {
-                    JObject cc = new JObject();
-                    cc["id"] = cardChance.Id;
-                    cc["chance"] = cardChance.Chance;
-                    cc["hasMaxCount"] = cardChance.HasMaxCount;
-                    cc["maxCountToGive"] = cardChance.MaxCountToGive;
-                    cc["prerequisiteCardId"] = cardChance.PrerequisiteCardId;
-                    chances.Add(cc);
-                }
-                foreach (string s in cardBag.SetPackCards)
-                {
-                    setPackCards.Add(s);
-                }
-                bag["chances"] = chances;
-                bag["setPackCards"] = setPackCards;
-                c.Add(bag);
-            }
-            b["cardBags"] = c;
-            print(b.ToString());
-        }*/
 	}
 }

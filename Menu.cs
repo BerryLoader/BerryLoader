@@ -26,15 +26,15 @@ namespace BerryLoaderNS
 	public class CustomMenu : MonoBehaviour
 	{
 		public RectTransform ModOptionsScreen;
-		public CustomButton buttonPrefab;
-		public CustomButton backButtonPrefab;
-		public Transform spacerPrefab;
+		public RectTransform DumpScreen;
 
 		public CustomButton menuButton;
 		public CustomButton skipIntroButton;
 		public CustomButton compactTooltipsButton;
+		public CustomButton dumpScreenButton;
 
 		public CustomButton dumpTexturesButton;
+		public CustomButton dumpBoostersButton;
 
 		public void Start()
 		{
@@ -45,6 +45,7 @@ namespace BerryLoaderNS
 			berryText.GetComponent<TextMeshProUGUI>().fontSize = 30;
 
 			ModOptionsScreen = MenuAPI.CreateScreen("Mod Options");
+			DumpScreen = MenuAPI.CreateScreen("Dump Assets");
 
 			var parent = ModOptionsScreen.GetChild(0).GetChild(1);
 
@@ -57,7 +58,17 @@ namespace BerryLoaderNS
 
 			MenuAPI.CreateSpacer(parent);
 
-			dumpTexturesButton = MenuAPI.CreateButton(parent, "Dump Textures", (() =>
+			dumpScreenButton = MenuAPI.CreateButton(parent, "Dump Assets", DumpScreen);
+
+			MenuAPI.CreateSpacer(parent);
+
+			MenuAPI.CreateButton(parent, "Back", GameCanvas.instance.MainMenuScreen);
+
+			BerryLoader.ModOptionsScreen = ModOptionsScreen;
+
+			var dp = DumpScreen.GetChild(0).GetChild(1);
+
+			dumpTexturesButton = MenuAPI.CreateButton(dp, "Dump Textures", (() =>
 			{
 				ModalScreen.instance.Clear();
 				ModalScreen.instance.SetTexts("Dump Textures", "<color=#ff003f>PLEASE DO NOT DISTRIBUTE ANY DUMPED ASSETS</color>\n\n<size=80%>Note: Your game will lag for a bit. Check logs for more information.</size>");
@@ -66,11 +77,11 @@ namespace BerryLoaderNS
 				GameCanvas.instance.OpenModal();
 			}));
 
-			MenuAPI.CreateSpacer(parent);
+			dumpBoostersButton = MenuAPI.CreateButton(dp, "Dump Boosterpacks", (() => { Dumper.DumpBoosters(); }));
 
-			MenuAPI.CreateButton(parent, "Back", GameCanvas.instance.MainMenuScreen);
+			MenuAPI.CreateSpacer(dp);
 
-			BerryLoader.ModOptionsScreen = ModOptionsScreen;
+			MenuAPI.CreateButton(dp, "Back", ModOptionsScreen);
 		}
 	}
 }
