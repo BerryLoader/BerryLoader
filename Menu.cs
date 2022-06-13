@@ -60,7 +60,7 @@ namespace BerryLoaderNS
 			dumpTexturesButton = MenuAPI.CreateButton(parent, "Dump Textures", (() =>
 			{
 				ModalScreen.instance.Clear();
-				ModalScreen.instance.SetTexts("Dump Textures", "PLEASE DO NOT DISTRIBUTE ANY DUMPED ASSETS\n\nNote: Your game will lag for a bit. Check logs for more information.");
+				ModalScreen.instance.SetTexts("Dump Textures", "<color=#ff003f>PLEASE DO NOT DISTRIBUTE ANY DUMPED ASSETS</color>\n\n<size=80%>Note: Your game will lag for a bit. Check logs for more information.</size>");
 				ModalScreen.instance.AddOption("Dump", (() => { GameCanvas.instance.CloseModal(); BerryLoaderNS.Dumper.DumpTextures(); }));
 				ModalScreen.instance.AddOption("Cancel", (() => { GameCanvas.instance.CloseModal(); }));
 				GameCanvas.instance.OpenModal();
