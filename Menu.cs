@@ -35,6 +35,7 @@ namespace BerryLoaderNS
 
 		public CustomButton dumpTexturesButton;
 		public CustomButton dumpBoostersButton;
+		public CustomButton dumpBlueprintsButton;
 
 		public void Start()
 		{
@@ -64,8 +65,6 @@ namespace BerryLoaderNS
 
 			MenuAPI.CreateButton(parent, "Back", GameCanvas.instance.MainMenuScreen);
 
-			BerryLoader.ModOptionsScreen = ModOptionsScreen;
-
 			var dp = DumpScreen.GetChild(0).GetChild(1);
 
 			dumpTexturesButton = MenuAPI.CreateButton(dp, "Dump Textures", (() =>
@@ -78,6 +77,8 @@ namespace BerryLoaderNS
 			}));
 
 			dumpBoostersButton = MenuAPI.CreateButton(dp, "Dump Boosterpacks", (() => { Dumper.DumpBoosters(); }));
+
+			dumpBlueprintsButton = MenuAPI.CreateButton(dp, "Dump Blueprints", (() => { Dumper.DumpBlueprints(); }));
 
 			MenuAPI.CreateSpacer(dp);
 

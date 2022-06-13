@@ -35,8 +35,6 @@ namespace BerryLoaderNS
 		public static GameCard tempCurrentGameCard;
 		public static CardData tempCurrentCardData;
 
-		public static RectTransform ModOptionsScreen = null;
-
 		public static ConfigEntry<bool> configSkipIntro;
 		public static ConfigEntry<bool> configCompactTooltips;
 		public static ConfigEntry<bool> configDisablePauseText;

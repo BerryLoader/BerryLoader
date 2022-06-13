@@ -22,7 +22,7 @@ namespace BerryLoaderNS
 		public Dictionary<string, string> dependencies;
 	}
 
-	class ModOverride : MonoBehaviour
+	public class ModOverride : MonoBehaviour
 	{
 		public string Name;
 		public string Description;

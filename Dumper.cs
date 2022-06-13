@@ -79,6 +79,33 @@ namespace BerryLoaderNS
 			}
 		}
 
+		public static void DumpBlueprints()
+		{
+			foreach (var blueprint in WorldManager.instance.BlueprintPrefabs)
+			{
+				BerryLoader.L.LogInfo($"dumping {blueprint.Id}");
+				JObject b = new JObject();
+				b["name"] = blueprint.Name;
+				b["id"] = blueprint.Id;
+				b["blueprintGroup"] = blueprint.BlueprintGroup.ToString();
+				b["stackPostText"] = blueprint.StackPostText;
+				JArray s = new JArray();
+				foreach (var sp in blueprint.Subprints)
+				{
+					JObject p = new JObject();
+					p["requiredCards"] = new JArray(sp.RequiredCards);
+					p["cardsToRemove"] = new JArray(sp.CardsToRemove);
+					p["resultCard"] = sp.ResultCard;
+					p["extraResultCards"] = new JArray(sp.ExtraResultCards);
+					p["time"] = sp.Time;
+					p["status"] = sp.StatusName;
+					s.Add(p);
+				}
+				b["subprints"] = s;
+				BerryLoader.L.LogInfo(b.ToString());
+			}
+		}
+
 		// https://stackoverflow.com/a/44734346
 		public static Texture2D duplicateTexture(Texture2D source)
 		{
