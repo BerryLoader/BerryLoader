@@ -19,7 +19,7 @@ namespace BerryLoaderNS
 				if (cd.Icon != null)
 				{
 					var tx = duplicateTexture(cd.Icon.texture);
-					File.WriteAllBytes(Path.Combine(BerryLoader.berryDir, "dumps", $"card_{cd.Id}.png"), tx.EncodeToPNG());
+					File.WriteAllBytes(Path.Combine(Directory.GetCurrentDirectory(), "dumps", $"card_{cd.Id}.png"), tx.EncodeToPNG());
 				}
 				else
 					BerryLoader.L.LogInfo($"no texture found for {cd.Id}");
@@ -30,7 +30,7 @@ namespace BerryLoaderNS
 				if (bp.BoosterId != null)
 				{
 					var tx = duplicateTexture(bp.BoosterpackIcon.texture);
-					File.WriteAllBytes(Path.Combine(BerryLoader.berryDir, "dumps", $"booster_{bp.BoosterId}.png"), tx.EncodeToPNG());
+					File.WriteAllBytes(Path.Combine(Directory.GetCurrentDirectory(), "dumps", $"booster_{bp.BoosterId}.png"), tx.EncodeToPNG());
 				}
 				else
 					BerryLoader.L.LogInfo($"no texture found for {bp.BoosterId}");
