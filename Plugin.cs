@@ -119,7 +119,8 @@ namespace BerryLoaderNS
 
 					var inst = MonoBehaviour.Instantiate(wood.gameObject);
 					CardData card = inst.GetComponent<CardData>();
-					card.StartCoroutine(ResourceHelper.GetAudioClip(card, Path.Combine(modDir, "Sounds", modcard.audio)));
+					if (!modcard.audio.Equals(""))
+						card.StartCoroutine(ResourceHelper.GetAudioClip(card, Path.Combine(modDir, "Sounds", modcard.audio)));
 					card.Id = modcard.id;
 					ModOverride mo = card.gameObject.AddComponent<ModOverride>();
 					mo.Name = modcard.name;
@@ -139,7 +140,8 @@ namespace BerryLoaderNS
 						DestroyImmediate(card);
 						BerryLoader.CardDataInjectables.Add(inst.GetComponent<CardData>());
 						((CardData)inst.GetComponent(modTypes[modcard.cardDataScript])).gameObject.SetActive(true);
-						((MonoBehaviour)inst.GetComponent(modTypes[modcard.cardDataScript])).StartCoroutine(ResourceHelper.GetAudioClip((CardData)inst.GetComponent(modTypes[modcard.cardDataScript]), Path.Combine(modDir, "Sounds", modcard.audio)));
+						if (!modcard.audio.Equals(""))
+							((MonoBehaviour)inst.GetComponent(modTypes[modcard.cardDataScript])).StartCoroutine(ResourceHelper.GetAudioClip((CardData)inst.GetComponent(modTypes[modcard.cardDataScript]), Path.Combine(modDir, "Sounds", modcard.audio)));
 					}
 					else
 						BerryLoader.CardDataInjectables.Add(card);
