@@ -11,8 +11,15 @@ namespace BerryLoaderNS
 		public static void Init()
 		{
 			BerryLoader.L.LogInfo("initing discord..");
-			client = new Discord.Discord(974015953782341692, (UInt64)Discord.CreateFlags.NoRequireDiscord);
-			am = client.GetActivityManager();
+			try
+			{
+				client = new Discord.Discord(974015953782341692, (UInt64)Discord.CreateFlags.NoRequireDiscord);
+				am = client.GetActivityManager();
+			}
+			catch (Discord.ResultException e)
+			{
+				BerryLoader.L.LogInfo("discord is not running");
+			}
 			var activity = new Discord.Activity
 			{
 				Details = "In the menus",
@@ -21,10 +28,7 @@ namespace BerryLoaderNS
 				},
 				Instance = true
 			};
-			am.UpdateActivity(activity, result =>
-			{
-				BerryLoader.L.LogInfo($"discord got result: {result}");
-			});
+			UpdateActivity(activity);
 		}
 
 		public static void UpdateActivity(string details = "", string state = "")
@@ -38,18 +42,18 @@ namespace BerryLoaderNS
 				},
 				Instance = true
 			};
-			am.UpdateActivity(activity, result =>
-			{
-				BerryLoader.L.LogInfo($"discord got result: {result}");
-			});
+			UpdateActivity(activity);
 		}
 
 		public static void UpdateActivity(Discord.Activity activity)
 		{
-			am.UpdateActivity(activity, result =>
+			if (am != null)
 			{
-				BerryLoader.L.LogInfo($"discord got result: {result}");
-			});
+				am.UpdateActivity(activity, result =>
+				{
+					BerryLoader.L.LogInfo($"discord got result: {result}");
+				});
+			}
 		}
 	}
 }

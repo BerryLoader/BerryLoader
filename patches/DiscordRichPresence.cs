@@ -8,7 +8,8 @@ namespace BerryLoaderNS
 		[HarmonyPostfix]
 		public static void DCWMUpdate()
 		{
-			DiscordAPI.client.RunCallbacks();
+			if (DiscordAPI.client != null)
+				DiscordAPI.client.RunCallbacks();
 		}
 
 		[HarmonyPatch(typeof(WorldManager), "Awake")]
