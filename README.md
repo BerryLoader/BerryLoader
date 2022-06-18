@@ -3,7 +3,7 @@
 </div>
 
 <div align="center">
-	<h1 align="center">BerryLoader</h1
+	<h1 align="center">BerryLoader</h1>
 	<img src="https://cdn.discordapp.com/attachments/813411249701519370/986199450311610448/berryloader.png" width=200em height=200em>>
 </div>
 
