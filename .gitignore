@@ -6,3 +6,4 @@ dlls/Unity.TextMeshPro.dll
 distribute.py
 dist/
 BerryLoader.zip
+build.py
