@@ -121,7 +121,7 @@ namespace BerryLoaderNS
 
 					var inst = MonoBehaviour.Instantiate(wood.gameObject);
 					CardData card = inst.GetComponent<CardData>();
-					if (!modcard.audio.Equals(""))
+					if (modcard.audio != null)
 					{
 						L.LogInfo($"attempting to load {modcard.audio} for {modcard.id}");
 						card.StartCoroutine(ResourceHelper.GetAudioClip(card, Path.Combine(modDir, "Sounds", modcard.audio)));
@@ -137,7 +137,7 @@ namespace BerryLoaderNS
 					card.MyCardType = EnumHelper.ToCardType(modcard.type);
 					card.MyGameCard = MonoBehaviour.Instantiate(__instance.GameCardPrefab);
 					card.MyGameCard.gameObject.SetActive(false); // deactivate it so Start() methods dont get called on next frame
-																 //card.gameObject.SetActive(false); // is removing this line a good idea?
+																 //card.gameObject.SetActive(false); // is removing this line a good idea? // i dont know, rework this entire thing pls its broken as fuck
 					if (!modcard.cardDataScript.Equals(""))
 					{
 						inst.AddComponent(modTypes[modcard.cardDataScript]);
@@ -145,7 +145,7 @@ namespace BerryLoaderNS
 						DestroyImmediate(card);
 						BerryLoader.CardDataInjectables.Add(inst.GetComponent<CardData>());
 						((CardData)inst.GetComponent(modTypes[modcard.cardDataScript])).gameObject.SetActive(true);
-						if (!modcard.audio.Equals(""))
+						if (modcard.audio != null)
 						{
 							L.LogInfo($"attempting to load {modcard.audio} for {modcard.id} (custom CardData)");
 							((MonoBehaviour)inst.GetComponent(modTypes[modcard.cardDataScript])).StartCoroutine(ResourceHelper.GetAudioClip((CardData)inst.GetComponent(modTypes[modcard.cardDataScript]), Path.Combine(modDir, "Sounds", modcard.audio)));
@@ -220,6 +220,7 @@ namespace BerryLoaderNS
 
 			var humble = WorldManager.instance.BoosterPackPrefabs.Find(x => x.NameTerm == "pack_humble_beginnings_text");
 			L.LogInfo("loading boosterpacks..");
+			BoosterpackInjectables.Clear();
 			foreach (var modDir in modDirs)
 			{
 				foreach (var file in new DirectoryInfo(Path.Combine(modDir, "Boosterpacks")).GetFiles())
