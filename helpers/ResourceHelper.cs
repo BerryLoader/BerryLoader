@@ -20,6 +20,7 @@ namespace BerryLoaderNS
 				}
 				else
 				{
+					BerryLoader.L.LogInfo($"got audio for {card.Id}");
 					card.PickupSound = DownloadHandlerAudioClip.GetContent(www);
 				}
 			}

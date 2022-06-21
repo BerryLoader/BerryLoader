@@ -114,13 +114,18 @@ namespace BerryLoaderNS
 					var content = File.ReadAllText(Path.Combine(modDir, "Cards", file.Name));
 					ModCard modcard = JsonConvert.DeserializeObject<ModCard>(content);
 
+					L.LogInfo($"loading card: {modcard.id}");
+
 					if (!modcard.gameCardScript.Equals(""))
 						idToScript[modcard.id] = modTypes[modcard.gameCardScript];
 
 					var inst = MonoBehaviour.Instantiate(wood.gameObject);
 					CardData card = inst.GetComponent<CardData>();
 					if (!modcard.audio.Equals(""))
+					{
+						L.LogInfo($"attempting to load {modcard.audio} for {modcard.id}");
 						card.StartCoroutine(ResourceHelper.GetAudioClip(card, Path.Combine(modDir, "Sounds", modcard.audio)));
+					}
 					card.Id = modcard.id;
 					ModOverride mo = card.gameObject.AddComponent<ModOverride>();
 					mo.Name = modcard.name;
@@ -132,7 +137,7 @@ namespace BerryLoaderNS
 					card.MyCardType = EnumHelper.ToCardType(modcard.type);
 					card.MyGameCard = MonoBehaviour.Instantiate(__instance.GameCardPrefab);
 					card.MyGameCard.gameObject.SetActive(false); // deactivate it so Start() methods dont get called on next frame
-					card.gameObject.SetActive(false);
+																 //card.gameObject.SetActive(false); // is removing this line a good idea?
 					if (!modcard.cardDataScript.Equals(""))
 					{
 						inst.AddComponent(modTypes[modcard.cardDataScript]);
@@ -141,7 +146,10 @@ namespace BerryLoaderNS
 						BerryLoader.CardDataInjectables.Add(inst.GetComponent<CardData>());
 						((CardData)inst.GetComponent(modTypes[modcard.cardDataScript])).gameObject.SetActive(true);
 						if (!modcard.audio.Equals(""))
+						{
+							L.LogInfo($"attempting to load {modcard.audio} for {modcard.id} (custom CardData)");
 							((MonoBehaviour)inst.GetComponent(modTypes[modcard.cardDataScript])).StartCoroutine(ResourceHelper.GetAudioClip((CardData)inst.GetComponent(modTypes[modcard.cardDataScript]), Path.Combine(modDir, "Sounds", modcard.audio)));
+						}
 					}
 					else
 						BerryLoader.CardDataInjectables.Add(card);
@@ -151,6 +159,8 @@ namespace BerryLoaderNS
 				{
 					var content = File.ReadAllText(Path.Combine(modDir, "Blueprints", file.Name));
 					ModBlueprint modblueprint = JsonConvert.DeserializeObject<ModBlueprint>(content);
+
+					L.LogInfo($"loading blueprint: {modblueprint.id}");
 
 					var bpinst = MonoBehaviour.Instantiate(shed);
 					var bp = bpinst.GetComponent<Blueprint>();
@@ -216,6 +226,8 @@ namespace BerryLoaderNS
 				{
 					var content = File.ReadAllText(Path.Combine(modDir, "Boosterpacks", file.Name));
 					ModBoosterpack modbooster = JsonConvert.DeserializeObject<ModBoosterpack>(content);
+
+					L.LogInfo($"loading boosterpack: {modbooster.id}");
 
 					var bpinst = MonoBehaviour.Instantiate(humble.gameObject).GetComponent<Boosterpack>();
 					bpinst.gameObject.SetActive(false);
