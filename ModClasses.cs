@@ -45,7 +45,6 @@ namespace BerryLoaderNS
 	{
 		public string id;
 		public string name;
-		// public string description; // probably unnecessary? these dont show up in the cardopedia
 		public int value = 1; // default? no clue if it works or not
 		public string icon;
 		public string group; // unused till i figure stuff out

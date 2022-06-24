@@ -121,35 +121,30 @@ namespace BerryLoaderNS
 
 					var inst = MonoBehaviour.Instantiate(wood.gameObject);
 					CardData card = inst.GetComponent<CardData>();
-					if (modcard.audio != null)
-					{
-						L.LogInfo($"attempting to load {modcard.audio} for {modcard.id}");
-						card.StartCoroutine(ResourceHelper.GetAudioClip(card, Path.Combine(modDir, "Sounds", modcard.audio)));
-					}
 					card.Id = modcard.id;
 					ModOverride mo = card.gameObject.AddComponent<ModOverride>();
 					mo.Name = modcard.name;
 					mo.Description = modcard.description;
 					card.Value = modcard.value;
+					if (modcard.audio != null)
+					{
+						L.LogInfo($"attempting to load {modcard.audio} for {modcard.id}");
+						WorldManager.instance.StartCoroutine(ResourceHelper.GetAudioClip(card.Id, Path.Combine(modDir, "Sounds", modcard.audio)));
+					}
 					var tex = new Texture2D(1024, 1024); // TODO: size?
 					tex.LoadImage(File.ReadAllBytes(Path.Combine(modDir, "Images", modcard.icon)));
 					card.Icon = Sprite.Create(tex, wood.Icon.rect, wood.Icon.pivot);
 					card.MyCardType = EnumHelper.ToCardType(modcard.type);
 					card.MyGameCard = MonoBehaviour.Instantiate(__instance.GameCardPrefab);
 					card.MyGameCard.gameObject.SetActive(false); // deactivate it so Start() methods dont get called on next frame
-																 //card.gameObject.SetActive(false); // is removing this line a good idea? // i dont know, rework this entire thing pls its broken as fuck
+					card.gameObject.SetActive(false);
 					if (!modcard.cardDataScript.Equals(""))
 					{
 						inst.AddComponent(modTypes[modcard.cardDataScript]);
 						ReflectionHelper.CopyCardDataProps((CardData)inst.GetComponent(modTypes[modcard.cardDataScript]), card);
 						DestroyImmediate(card);
 						BerryLoader.CardDataInjectables.Add(inst.GetComponent<CardData>());
-						((CardData)inst.GetComponent(modTypes[modcard.cardDataScript])).gameObject.SetActive(true);
-						if (modcard.audio != null)
-						{
-							L.LogInfo($"attempting to load {modcard.audio} for {modcard.id} (custom CardData)");
-							((MonoBehaviour)inst.GetComponent(modTypes[modcard.cardDataScript])).StartCoroutine(ResourceHelper.GetAudioClip((CardData)inst.GetComponent(modTypes[modcard.cardDataScript]), Path.Combine(modDir, "Sounds", modcard.audio)));
-						}
+						((CardData)inst.GetComponent(modTypes[modcard.cardDataScript])).gameObject.SetActive(false);
 					}
 					else
 						BerryLoader.CardDataInjectables.Add(card);
@@ -183,7 +178,7 @@ namespace BerryLoaderNS
 						sp.ResultCard = ms.resultCard;
 						sp.Time = ms.time;
 						sp.StatusTerm = ms.status;
-						// sp.ExtraResultCards = ms.extraResultCards //?? check modsubprint
+						sp.ExtraResultCards = ms.extraResultCards.Split(',').Select(str => str.Trim()).ToArray(); // this implementation could be wrong; needs more info
 						bp.Subprints.Add(sp);
 					}
 					BerryLoader.CardDataInjectables.Add(bp);
@@ -321,6 +316,8 @@ namespace BerryLoaderNS
 				GameScreen.instance.UpdateIdeasLog();
 			if (card.gameObject.GetComponent<ModOverride>() != null && card.gameObject.GetComponent<Blueprint>() != null)
 				card.gameObject.GetComponent<ModOverride>().Description = card.gameObject.GetComponent<Blueprint>().GetText();
+			if (ResourceHelper.AudioClips.ContainsKey(card.Id))
+				card.PickupSound = ResourceHelper.AudioClips[card.Id];
 			if (idToScript.ContainsKey(cardDataPrefab.Id))
 			{
 				tempCurrentGameCard = newCard;
@@ -329,6 +326,7 @@ namespace BerryLoaderNS
 				card.MyGameCard = (GameCard)newCard.gameObject.GetComponent(idToScript[cardDataPrefab.Id]);
 				// copy props here?
 			}
+			card.gameObject.SetActive(true);
 			__result = card;
 			return false;
 		}
