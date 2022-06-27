@@ -4,24 +4,19 @@ namespace BerryLoaderNS
 {
 	public static class EnumHelper
 	{
+		public static T ToTCardType<T>(string str)
+			=> (T)Enum.Parse(typeof(T), str, true);
+
 		public static CardType ToCardType(string str)
-		{
-			return (CardType)Enum.Parse(typeof(CardType), str, true);
-		}
+			=> ToTCardType<CardType>(str);
 
 		public static BlueprintGroup ToBlueprintGroup(string str)
-		{
-			return (BlueprintGroup)Enum.Parse(typeof(BlueprintGroup), str, true);
-		}
+			=> ToTCardType<BlueprintGroup>(str);
 
 		public static CardBagType ToCardBagType(string str)
-		{
-			return (CardBagType)Enum.Parse(typeof(CardBagType), str, true);
-		}
+			=> ToTCardType<CardBagType>(str);
 
 		public static SetCardBag ToSetCardBag(string str)
-		{
-			return (SetCardBag)Enum.Parse(typeof(SetCardBag), str, true);
-		}
+			=> ToTCardType<SetCardBag>(str);
 	}
 }
