@@ -36,18 +36,20 @@ namespace BerryLoaderNS
 		public static ConfigEntry<bool> configCompactTooltips;
 		public static ConfigEntry<bool> configDisablePauseText;
 
+		public static Harmony HarmonyInstance = null;
+
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051", Justification = "Yes.")]
 		private void Awake()
 		{
+			HarmonyInstance = new Harmony("BerryLoader");
 			configSkipIntro = Config.Bind("Patches", "SkipIntro", false, "enable intro skip");
 			configCompactTooltips = Config.Bind("Patches", "CompactTooltips", false, "enable compact tooltips");
 			configDisablePauseText = Config.Bind("Patches", "DisablePauseText", false, "disable flashing pause text");
 
 			L = Logger;
 			L.LogInfo($"BerryLoader is loaded!");
-			Harmony.CreateAndPatchAll(typeof(BerryLoader));
-			Harmony.CreateAndPatchAll(typeof(Patches));
-			DiscordAPI.Init();
+			HarmonyInstance.PatchAll(typeof(BerryLoader));
+			HarmonyInstance.PatchAll(typeof(Patches));
 
 			berryDir = Path.Combine(Directory.GetCurrentDirectory(), "BepInEx/Plugins/BerryLoader");
 			modsDir = Path.Combine(Directory.GetCurrentDirectory(), "mods");
@@ -71,7 +73,11 @@ namespace BerryLoaderNS
 				var mod = Assembly.Load(File.ReadAllBytes(Path.Combine(Directory.GetCurrentDirectory(), "mods", manifest.id, $"{manifest.id}.dll")));
 				foreach (var t in ReflectionHelper.GetSafeTypes(mod))
 				{
-					BerryLoader.L.LogInfo(t.ToString());
+					if (typeof(CardData).IsAssignableFrom(t))
+					{
+						L.LogInfo($"Found CardData: {t}");
+						InteractionAPI.CardDatas.Add(t);
+					}
 					if (t.BaseType == typeof(BerryLoaderMod))
 					{
 						L.LogInfo($"Found main class: {t.ToString()}");
@@ -83,8 +89,19 @@ namespace BerryLoaderNS
 				}
 			}
 
+			foreach (var t in ReflectionHelper.GetSafeTypes(typeof(CardData).Assembly))
+			{
+				if (typeof(CardData).IsAssignableFrom(t))
+				{
+					InteractionAPI.CardDatas.Add(t);
+				}
+			}
+
 			foreach (var mod in modClasses)
 				mod.Init();
+
+			InteractionAPI.Init();
+			DiscordAPI.Init();
 		}
 
 		[HarmonyPatch(typeof(WorldManager), "Awake")]
