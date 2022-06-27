@@ -22,8 +22,9 @@ namespace BerryLoaderNS
 					var n = MonoBehaviour.Instantiate(original, new Vector3(-3.6f, 0, 2.18f), original.transform.localRotation, packLine);
 					//n.transform.localPosition = new Vector3(-3.6f, 0, 0);
 					n.gameObject.name = bp.name;
-					n.GetComponent<BuyBoosterBox>().BoosterId = bp.id;
-					n.GetComponent<BuyBoosterBox>().Cost = bp.cost;
+					BuyBoosterBox buyBoosterBox = n.GetComponent<BuyBoosterBox>();
+					buyBoosterBox.BoosterId = bp.id;
+					buyBoosterBox.Cost = bp.cost;
 				}
 
 				// the following 10 lines of code took an entire afternoon. im tired and dumb.
