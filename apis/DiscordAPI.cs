@@ -1,5 +1,4 @@
 using System;
-using HarmonyLib;
 
 namespace BerryLoaderNS
 {
@@ -18,7 +17,7 @@ namespace BerryLoaderNS
 			}
 			catch (Discord.ResultException e)
 			{
-				BerryLoader.L.LogInfo("discord is not running");
+				BerryLoader.L.LogInfo("discord is not running: " + e.Message);
 			}
 			var activity = new Discord.Activity
 			{
@@ -47,13 +46,10 @@ namespace BerryLoaderNS
 
 		public static void UpdateActivity(Discord.Activity activity)
 		{
-			if (am != null)
+			am?.UpdateActivity(activity, result =>
 			{
-				am.UpdateActivity(activity, result =>
-				{
-					BerryLoader.L.LogInfo($"discord got result: {result}");
-				});
-			}
+				BerryLoader.L.LogInfo($"discord got result: {result}");
+			});
 		}
 	}
 }
