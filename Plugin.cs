@@ -36,6 +36,7 @@ namespace BerryLoaderNS
 		public static ConfigEntry<bool> configCompactTooltips;
 		public static ConfigEntry<bool> configDisablePauseText;
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051", Justification = "Yes.")]
 		private void Awake()
 		{
 			configSkipIntro = Config.Bind("Patches", "SkipIntro", false, "enable intro skip");
