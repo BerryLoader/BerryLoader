@@ -96,16 +96,17 @@ namespace BerryLoaderNS
 			L.LogInfo("awaking");
 			WorldManager.instance = __instance;
 			BerryLoader.CardDataInjectables.Clear();
-			__instance.CardDataPrefabs = ((IEnumerable<CardData>)Resources.LoadAll<CardData>("Cards")).ToList<CardData>();
+            List<CardData> cardDatas = Resources.LoadAll<CardData>("Cards").ToList();
+			__instance.CardDataPrefabs = cardDatas;
 
-			L.LogInfo($"carddataprefabs before injection: {((IEnumerable<CardData>)Resources.LoadAll<CardData>("Cards")).ToList<CardData>().Count}");
+			L.LogInfo($"carddataprefabs before injection: {cardDatas.Count}");
 
 			foreach (var mod in modClasses)
 				mod.PreInjection();
 
 			// get a base object we can instantiate
-			var wood = ((IEnumerable<CardData>)Resources.LoadAll<CardData>("Cards")).ToList<CardData>().Find(x => x.Id == "wood");
-			var shed = ((IEnumerable<CardData>)Resources.LoadAll<CardData>("Cards")).ToList<CardData>().Find(x => x.Id == "blueprint_shed");
+			var wood = cardDatas.Find(x => x.Id == "wood");
+			var shed = cardDatas.Find(x => x.Id == "blueprint_shed");
 			L.LogInfo("loading cards and blueprints..");
 			foreach (var modDir in modDirs)
 			{
