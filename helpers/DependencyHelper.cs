@@ -59,16 +59,14 @@ namespace BerryLoaderNS
 		}
 
 		public static List<int> SignToExpectedValues(string sign)
-		{
-			switch (sign)
+			=> sign switch
 			{
 				// these nummies are so confusing :(
-				case ">=": return new List<int>() { -1, 0 };
-				case ">": return new List<int>() { -1 };
-				case "<=": return new List<int>() { 0, 1 };
-				case "<": return new List<int>() { 1 };
-				default: return new List<int>() { 0 };
-			}
-		}
+				">=" => new List<int>() { -1, 0 },
+				">" => new List<int>() { -1 },
+				"<=" => new List<int>() { 0, 1 },
+				"<" => new List<int>() { 1 },
+				_ => new List<int>() { 0 },
+			};
 	}
 }
