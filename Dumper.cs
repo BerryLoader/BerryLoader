@@ -1,10 +1,7 @@
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using UnityEngine;
-using System.Collections;
-using System.Linq;
 using System.IO;
-using System;
+using System.Linq;
+using UnityEngine;
 
 namespace BerryLoaderNS
 {
@@ -43,38 +40,29 @@ namespace BerryLoaderNS
 			foreach (var booster in WorldManager.instance.BoosterPackPrefabs)
 			{
 				BerryLoader.L.LogInfo($"dumping {booster.Name}");
-				JObject b = new JObject();
-				b["name"] = booster.Name;
-				b["id"] = booster.BoosterId;
-				b["minAchievementCount"] = booster.MinAchievementCount;
-				JArray c = new JArray();
-				foreach (CardBag cardBag in booster.CardBags)
+				JObject b = new JObject
 				{
-					JObject bag = new JObject();
-					bag["type"] = cardBag.CardBagType.ToString();
-					bag["cardsInPack"] = cardBag.CardsInPack;
-					bag["setCardBag"] = cardBag.SetCardBag.ToString();
-					JArray chances = new JArray();
-					JArray setPackCards = new JArray();
-					foreach (CardChance cardChance in cardBag.Chances)
-					{
-						JObject cc = new JObject();
-						cc["id"] = cardChance.Id;
-						cc["chance"] = cardChance.Chance;
-						cc["hasMaxCount"] = cardChance.HasMaxCount;
-						cc["maxCountToGive"] = cardChance.MaxCountToGive;
-						cc["prerequisiteCardId"] = cardChance.PrerequisiteCardId;
-						chances.Add(cc);
-					}
-					foreach (string s in cardBag.SetPackCards)
-					{
-						setPackCards.Add(s);
-					}
-					bag["chances"] = chances;
-					bag["setPackCards"] = setPackCards;
-					c.Add(bag);
-				}
-				b["cardBags"] = c;
+					["name"] = booster.Name,
+					["id"] = booster.BoosterId,
+					["minAchievementCount"] = booster.MinAchievementCount,
+					["cardBags"] = (JToken)booster.CardBags
+						.Select(cardBag => new JObject
+						{
+							["type"] = cardBag.CardBagType.ToString(),
+							["cardsInPack"] = cardBag.CardsInPack,
+							["setCardBag"] = cardBag.SetCardBag.ToString(),
+							["chances"] = (JToken)cardBag.Chances
+								.Select(cardChance => new JObject
+								{
+									["id"] = cardChance.Id,
+									["chance"] = cardChance.Chance,
+									["hasMaxCount"] = cardChance.HasMaxCount,
+									["maxCountToGive"] = cardChance.MaxCountToGive,
+									["prerequisiteCardId"] = cardChance.PrerequisiteCardId
+								}),
+							["setPackCards"] = (JToken)cardBag.SetPackCards.Select(s => s)
+						})
+				};
 				BerryLoader.L.LogInfo(b.ToString());
 			}
 		}
@@ -84,24 +72,23 @@ namespace BerryLoaderNS
 			foreach (var blueprint in WorldManager.instance.BlueprintPrefabs)
 			{
 				BerryLoader.L.LogInfo($"dumping {blueprint.Id}");
-				JObject b = new JObject();
-				b["name"] = blueprint.Name;
-				b["id"] = blueprint.Id;
-				b["blueprintGroup"] = blueprint.BlueprintGroup.ToString();
-				b["stackPostText"] = blueprint.StackPostText;
-				JArray s = new JArray();
-				foreach (var sp in blueprint.Subprints)
+				JObject b = new JObject
 				{
-					JObject p = new JObject();
-					p["requiredCards"] = new JArray(sp.RequiredCards);
-					p["cardsToRemove"] = new JArray(sp.CardsToRemove);
-					p["resultCard"] = sp.ResultCard;
-					p["extraResultCards"] = new JArray(sp.ExtraResultCards);
-					p["time"] = sp.Time;
-					p["status"] = sp.StatusName;
-					s.Add(p);
-				}
-				b["subprints"] = s;
+					["name"] = blueprint.Name,
+					["id"] = blueprint.Id,
+					["blueprintGroup"] = blueprint.BlueprintGroup.ToString(),
+					["stackPostText"] = blueprint.StackPostText,
+					["subprints"] = (JToken)blueprint.Subprints
+						.Select(sp => new JObject
+						{
+							["requiredCards"] = new JArray(sp.RequiredCards),
+							["cardsToRemove"] = new JArray(sp.CardsToRemove),
+							["resultCard"] = sp.ResultCard,
+							["extraResultCards"] = new JArray(sp.ExtraResultCards),
+							["time"] = sp.Time,
+							["status"] = sp.StatusName
+						})
+				};
 				BerryLoader.L.LogInfo(b.ToString());
 			}
 		}

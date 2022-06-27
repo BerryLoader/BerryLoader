@@ -3,15 +3,12 @@ using BepInEx.Configuration;
 using HarmonyLib;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
-using TMPro;
 
 namespace BerryLoaderNS
 {
@@ -96,7 +93,7 @@ namespace BerryLoaderNS
 			L.LogInfo("awaking");
 			WorldManager.instance = __instance;
 			BerryLoader.CardDataInjectables.Clear();
-            List<CardData> cardDatas = Resources.LoadAll<CardData>("Cards").ToList();
+			List<CardData> cardDatas = Resources.LoadAll<CardData>("Cards").ToList();
 			__instance.CardDataPrefabs = cardDatas;
 
 			L.LogInfo($"carddataprefabs before injection: {cardDatas.Count}");
@@ -170,18 +167,16 @@ namespace BerryLoaderNS
 					bp.Icon = Sprite.Create(tex, wood.Icon.rect, wood.Icon.pivot);
 					bp.BlueprintGroup = EnumHelper.ToBlueprintGroup(modblueprint.group);
 					bp.StackPostText = modblueprint.stackText;
-					bp.Subprints = new List<Subprint>();
-					foreach (ModSubprint ms in modblueprint.subprints)
-					{
-						var sp = new Subprint();
-						sp.RequiredCards = ms.requiredCards.Split(',').Select(str => str.Trim()).ToArray();
-						sp.CardsToRemove = ms.cardsToRemove.Split(',').Select(str => str.Trim()).ToArray();
-						sp.ResultCard = ms.resultCard;
-						sp.Time = ms.time;
-						sp.StatusTerm = ms.status;
-						sp.ExtraResultCards = ms.extraResultCards.Split(',').Select(str => str.Trim()).ToArray(); // this implementation could be wrong; needs more info
-						bp.Subprints.Add(sp);
-					}
+					bp.Subprints = modblueprint.subprints
+						.Select(ms => new Subprint
+						{
+							RequiredCards = ms.requiredCards.Split(',').Select(str => str.Trim()).ToArray(),
+							CardsToRemove = ms.cardsToRemove.Split(',').Select(str => str.Trim()).ToArray(),
+							ResultCard = ms.resultCard,
+							Time = ms.time,
+							StatusTerm = ms.status,
+							ExtraResultCards = ms.extraResultCards.Split(',').Select(str => str.Trim()).ToArray() // this implementation could be wrong; needs more info
+						}).ToList();
 					BerryLoader.CardDataInjectables.Add(bp);
 				}
 			}
@@ -240,27 +235,23 @@ namespace BerryLoaderNS
 					bpinst.BoosterpackIcon = Sprite.Create(tex, humble.BoosterpackIcon.rect, humble.BoosterpackIcon.pivot);
 					bpinst.BoosterId = modbooster.id;
 					bpinst.MinAchievementCount = modbooster.minAchievementCount;
-					bpinst.CardBags.Clear();
-					foreach (var cb in modbooster.cardBags)
-					{
-						var cardbag = new CardBag();
-						cardbag.CardBagType = EnumHelper.ToCardBagType(cb.type);
-						cardbag.CardsInPack = cb.cards;
-						cardbag.SetCardBag = EnumHelper.ToSetCardBag(cb.setCardBag);
-						cardbag.SetPackCards = new List<string>(); // ???
-						cardbag.Chances = new List<CardChance>();
-						foreach (var chance in cb.chances)
+					bpinst.CardBags = modbooster.cardBags
+						.Select(cb => new CardBag
 						{
-							var cc = new CardChance();
-							cc.Id = chance.id;
-							cc.Chance = chance.chance;
-							cc.HasMaxCount = chance.hasMaxCount;
-							cc.MaxCountToGive = chance.maxCountToGive;
-							cc.PrerequisiteCardId = chance.Prerequisite;
-							cardbag.Chances.Add(cc);
-						}
-						bpinst.CardBags.Add(cardbag);
-					}
+							CardBagType = EnumHelper.ToCardBagType(cb.type),
+							CardsInPack = cb.cards,
+							SetCardBag = EnumHelper.ToSetCardBag(cb.setCardBag),
+							SetPackCards = new List<string>(), // ???
+							Chances = cb.chances
+								.Select(chance => new CardChance
+								{
+									Id = chance.id,
+									Chance = chance.chance,
+									HasMaxCount = chance.hasMaxCount,
+									MaxCountToGive = chance.maxCountToGive,
+									PrerequisiteCardId = chance.Prerequisite
+								}).ToList()
+						}).ToList();
 
 					WorldManager.instance.BoosterPackPrefabs.Add(bpinst);
 					BerryLoader.BoosterpackInjectables.Add(modbooster);
