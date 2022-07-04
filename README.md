@@ -1,6 +1,6 @@
-<div align="center">
-    <h1 align="center">DISCLAIMER: This is a pre-release of BerryLoader. It is not considered production-ready. PRs will likely not be accepted.</h1>
-</div>
+# BerryLoader is currently being rewritten to support the Island Update Beta
+
+# DISCLAIMER: This is a pre-release of BerryLoader. It is not considered production-ready. PRs will likely not be accepted.
 
 <div align="center">
 	<img src="https://cdn.discordapp.com/attachments/813411249701519370/986199450311610448/berryloader.png" width=200em height=200em>
