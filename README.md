@@ -1,4 +1,4 @@
-# BerryLoader is currently being rewritten to support the Island Update Beta
+# BerryLoader is currently being rewritten to support the Island Update
 
 # DISCLAIMER: This is a pre-release of BerryLoader. It is not considered production-ready. PRs will likely not be accepted.
 
