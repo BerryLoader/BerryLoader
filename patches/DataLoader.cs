@@ -163,7 +163,12 @@ namespace BerryLoaderNS
 
 			__instance.BoosterPackPrefabs.AddRange(injectables);
 			__instance.BoosterPackPrefabs = __instance.BoosterPackPrefabs.OrderBy<Boosterpack, int>((Func<Boosterpack, int>)(x => x.MinAchievementCount)).ToList<Boosterpack>();
+		}
 
+		[HarmonyPatch(typeof(WorldManager), "Awake")]
+		[HarmonyPostfix]
+		static void WMAHook()
+		{
 			foreach (var mod in BerryLoader.modClasses)
 				mod.PostInjection();
 		}
