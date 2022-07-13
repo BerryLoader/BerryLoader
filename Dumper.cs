@@ -75,7 +75,7 @@ namespace BerryLoaderNS
 					c.Add(bag);
 				}
 				b["cardBags"] = c;
-				BerryLoader.L.LogInfo(b.ToString());
+				File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "dumps", $"booster_{booster.BoosterId}.json"), b.ToString());
 			}
 		}
 
@@ -88,6 +88,7 @@ namespace BerryLoaderNS
 				b["name"] = blueprint.Name;
 				b["id"] = blueprint.Id;
 				b["blueprintGroup"] = blueprint.BlueprintGroup.ToString();
+				b["needsExactMatch"] = blueprint.NeedsExactMatch;
 				JArray s = new JArray();
 				foreach (var sp in blueprint.Subprints)
 				{
@@ -96,12 +97,13 @@ namespace BerryLoaderNS
 					p["cardsToRemove"] = new JArray(sp.CardsToRemove);
 					p["resultCard"] = sp.ResultCard;
 					p["extraResultCards"] = new JArray(sp.ExtraResultCards);
+					p["resultAction"] = sp.ResultAction;
 					p["time"] = sp.Time;
 					p["status"] = sp.StatusName;
 					s.Add(p);
 				}
 				b["subprints"] = s;
-				BerryLoader.L.LogInfo(b.ToString());
+				File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "dumps", $"{blueprint.Id}.json"), b.ToString());
 			}
 		}
 
