@@ -8,15 +8,15 @@ namespace BerryLoaderNS
 	public static class DependencyHelper
 	{
 		/*public static void Test()
-        {
-            //var a = new Version("0.0.1");
-            //var b = new Version("0.0.2");
-            //BerryLoader.L.LogInfo(SignToExpectedValues("<").Contains(a.CompareTo(b)));
-            var a = JsonConvert.DeserializeObject<ModManifest>("{\"id\": \"A\", \"version\": \"1.0.0\", \"dependencies\": {}}");
-            var b = JsonConvert.DeserializeObject<ModManifest>("{\"id\": \"B\", \"version\": \"1.0.0\", \"dependencies\": {\"C\": \">= 1.0.0\"}}");
-            var c = JsonConvert.DeserializeObject<ModManifest>("{\"id\": \"C\", \"version\": \"1.0.0\", \"dependencies\": {}}");
-            GetValidModLoadOrder(new List<ModManifest>() { a, b, c });
-        }*/
+		{
+			//var a = new Version("0.0.1");
+			//var b = new Version("0.0.2");
+			//BerryLoader.L.LogInfo(SignToExpectedValues("<").Contains(a.CompareTo(b)));
+			var a = JsonConvert.DeserializeObject<ModManifest>("{\"id\": \"A\", \"version\": \"1.0.0\", \"dependencies\": {}}");
+			var b = JsonConvert.DeserializeObject<ModManifest>("{\"id\": \"B\", \"version\": \"1.0.0\", \"dependencies\": {\"Root\": \">= 0.1.0\"}}");
+			var c = JsonConvert.DeserializeObject<ModManifest>("{\"id\": \"C\", \"version\": \"1.0.0\", \"dependencies\": {}}");
+			BerryLoader.L.LogInfo(String.Join(", ", GetValidModLoadOrder(new List<ModManifest>() { a, b, c })));
+		}*/
 
 		public static List<ModManifest> GetValidModLoadOrder(List<ModManifest> mods)
 		{
@@ -24,7 +24,8 @@ namespace BerryLoaderNS
 			// a root node is required because uhhhhhhh
 			var root = new ModManifest()
 			{
-				id = "Root",
+				id = "BerryLoader",
+				version = BerryLoader.VERSION,
 				dependencies = new Dictionary<string, string>()
 			};
 			foreach (var mod in mods)

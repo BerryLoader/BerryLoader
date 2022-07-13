@@ -25,7 +25,7 @@ namespace BerryLoaderNS
 			}
 		}
 
-		// qk is a fucking god
+		// outdated code, probably shouldnt be used
 		public static void CopyGameCardProps(GameCard modcard, GameCard original)
 		{
 			// probably missing stuff here lol
@@ -39,7 +39,7 @@ namespace BerryLoaderNS
 
 		public static void CopyCardDataProps(CardData modcarddata, CardData original)
 		{
-			var copyProps = "Id PickupSound UniqueId ParentUniqueId Value Icon MyGameCard IsFoil MyCardType IsBuilding IsCookedFood".Split(' ');
+			var copyProps = "Id PickupSound PickupSoundGroup UniqueId ParentUniqueId Value Icon MyGameCard IsFoil MyCardType IsBuilding IsCookedFood HideFromCardopedia StatusEffects creationTime IsIslandCard ExpectedValue".Split(' ');
 			foreach (var prop in copyProps)
 			{
 				var field = typeof(CardData).GetField(prop, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);

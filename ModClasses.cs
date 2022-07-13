@@ -7,7 +7,6 @@ namespace BerryLoaderNS
 	{
 		public ModManifest manifest;
 		public virtual void Init() { }
-		public virtual void PreInjection() { }
 		public virtual void PostInjection() { }
 	}
 
@@ -37,7 +36,6 @@ namespace BerryLoaderNS
 		public string type;
 		public string icon;
 		public string audio;
-		public string gameCardScript = "";
 		public string cardDataScript = "";
 	}
 
@@ -47,7 +45,7 @@ namespace BerryLoaderNS
 		public string name;
 		public int value = 1; // default? no clue if it works or not
 		public string icon;
-		public string group; // unused till i figure stuff out
+		public string group;
 		public string stackText;
 		public List<ModSubprint> subprints;
 	}

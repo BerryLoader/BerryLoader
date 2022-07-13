@@ -1,9 +1,6 @@
 bin/
 obj/
-dlls/Assembly-CSharp-firstpass.dll
-dlls/Assembly-CSharp.dll
-dlls/Unity.TextMeshPro.dll
 distribute.py
-dist/
 BerryLoader.zip
 build.py
+BerryLoader.csproj.user

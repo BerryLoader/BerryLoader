@@ -31,6 +31,7 @@ namespace BerryLoaderNS
 		public CustomButton menuButton;
 		public CustomButton skipIntroButton;
 		public CustomButton compactTooltipsButton;
+		public CustomButton disablePauseTextButton;
 		public CustomButton dumpScreenButton;
 
 		public CustomButton dumpTexturesButton;
@@ -45,17 +46,21 @@ namespace BerryLoaderNS
 			berryText.GetComponent<TextMeshProUGUI>().text = "(+BerryLoader)";
 			berryText.GetComponent<TextMeshProUGUI>().fontSize = 30;
 
-			ModOptionsScreen = MenuAPI.CreateScreen("Mod Options");
+			ModOptionsScreen = MenuAPI.CreateScreen("Mod Options", keepVersion: true);
 			DumpScreen = MenuAPI.CreateScreen("Dump Assets");
+
+			ModOptionsScreen.GetChild(0).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = $"{BerryLoader.VERSION}-pre";
 
 			var parent = ModOptionsScreen.GetChild(0).GetChild(1);
 
 			menuButton = MenuAPI.CreateButton(GameCanvas.instance.MainMenuScreen.GetChild(0).GetChild(5), "Mod Options", ModOptionsScreen);
-			menuButton.transform.SetSiblingIndex(6);
+			menuButton.transform.SetSiblingIndex(5);
 
 			skipIntroButton = MenuAPI.CreateConfigButton(parent, "Skip Intro", BerryLoader.configSkipIntro);
 
 			compactTooltipsButton = MenuAPI.CreateConfigButton(parent, "Compact Tooltips", BerryLoader.configCompactTooltips);
+
+			disablePauseTextButton = MenuAPI.CreateConfigButton(parent, "Disable \"Paused\" text", BerryLoader.configDisablePauseText);
 
 			MenuAPI.CreateSpacer(parent);
 

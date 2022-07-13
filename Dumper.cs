@@ -88,7 +88,6 @@ namespace BerryLoaderNS
 				b["name"] = blueprint.Name;
 				b["id"] = blueprint.Id;
 				b["blueprintGroup"] = blueprint.BlueprintGroup.ToString();
-				b["stackPostText"] = blueprint.StackPostText;
 				JArray s = new JArray();
 				foreach (var sp in blueprint.Subprints)
 				{

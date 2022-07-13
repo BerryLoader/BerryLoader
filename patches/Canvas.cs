@@ -13,15 +13,15 @@ namespace BerryLoaderNS
 			var m = new GameObject().AddComponent<CustomMenu>();
 		}
 
-		[HarmonyPatch(typeof(GameCanvas), "SetScreen")]
+		/*[HarmonyPatch(typeof(GameCanvas), "SetScreen")]
 		[HarmonyPrefix]
-		public static void GCSSPost(RectTransform screen)
+		public static void GCSSPost(RectTransform nextScreen)
 		{
 			foreach (var sc in MenuAPI.Screens)
 			{
 				if (sc != null)
-					sc.gameObject.SetActive(screen == sc);
+					sc.gameObject.SetActive(nextScreen == sc);
 			}
-		}
+		}*/
 	}
 }

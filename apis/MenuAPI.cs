@@ -1,8 +1,11 @@
 using BepInEx.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace BerryLoaderNS
 {
@@ -11,24 +14,40 @@ namespace BerryLoaderNS
 		public static CustomButton buttonPrefab;
 		public static Transform spacerPrefab;
 
-		public static List<Transform> Screens = new List<Transform>();
+		static FieldInfo ScreensField;
+		static FieldInfo ScreenPositionsField;
+		static FieldInfo ScreenInTransitionField;
 
 		public static void Init()
 		{
-			buttonPrefab = GameCanvas.instance.OptionsScreen.GetComponentInChildren<CustomButton>();
+			buttonPrefab = PrefabManager.instance.ButtonPrefab;
 			spacerPrefab = GameCanvas.instance.MainMenuScreen.GetChild(0).GetChild(3);
+			ScreensField = typeof(GameCanvas).GetField("screens", BindingFlags.Instance | BindingFlags.NonPublic);
+			ScreenPositionsField = typeof(GameCanvas).GetField("screenPositions", BindingFlags.Instance | BindingFlags.NonPublic);
+			ScreenInTransitionField = typeof(GameCanvas).GetField("screenInTransition", BindingFlags.Instance | BindingFlags.NonPublic);
 		}
 
-		public static RectTransform CreateScreen(string text)
+		public static RectTransform CreateScreen(string text, bool keepVersion = false)
 		{
 			var screen = MonoBehaviour.Instantiate(GameCanvas.instance.OptionsScreen, GameCanvas.instance.transform);
 			screen.GetComponentInChildren<TextMeshProUGUI>().text = text;
 			MonoBehaviour.Destroy(screen.transform.GetChild(0).GetChild(0).GetComponent<LocSetter>());
+			MonoBehaviour.Destroy(screen.transform.GetComponent<OptionsScreen>());
+			if (!keepVersion)
+				MonoBehaviour.Destroy(screen.transform.GetChild(0).GetChild(0).GetChild(0).gameObject);
 			foreach (Transform child in screen.GetChild(0).GetChild(1))
 			{
 				MonoBehaviour.Destroy(child.gameObject);
 			}
-			Screens.Add(screen);
+			List<RectTransform> screens = (List<RectTransform>)ScreensField.GetValue(GameCanvas.instance);
+			screens.Add(screen);
+			ScreensField.SetValue(GameCanvas.instance, screens);
+			List<GameCanvas.ScreenPosition> screenPositions = (List<GameCanvas.ScreenPosition>)ScreenPositionsField.GetValue(GameCanvas.instance);
+			screenPositions.Add(GameCanvas.ScreenPosition.Left);
+			ScreenPositionsField.SetValue(GameCanvas.instance, screenPositions);
+			List<bool> screenInTransition = (List<bool>)ScreenInTransitionField.GetValue(GameCanvas.instance);
+			screenInTransition.Add(false);
+			ScreenInTransitionField.SetValue(GameCanvas.instance, screenInTransition);
 			return screen;
 		}
 

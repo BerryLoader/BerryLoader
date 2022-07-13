@@ -8,6 +8,7 @@ namespace BerryLoaderNS
 		[HarmonyPostfix]
 		public static void DCWMUpdate()
 		{
+			// if the discord client dies while the game is running, this will cause error spam in console
 			if (DiscordAPI.client != null)
 				DiscordAPI.client.RunCallbacks();
 		}
@@ -23,14 +24,21 @@ namespace BerryLoaderNS
 		[HarmonyPostfix]
 		public static void DCWMPlay()
 		{
-			DiscordAPI.UpdateActivity("Stacking cards", $"Moon {WorldManager.instance.CurrentMonth}");
+			DiscordAPI.UpdateActivity(DiscordAPI.GetBoardString(WorldManager.instance.CurrentBoard.Id), $"Moon {WorldManager.instance.CurrentMonth}");
 		}
 
 		[HarmonyPatch(typeof(WorldManager), "EndOfMonth")]
 		[HarmonyPrefix]
 		public static void DCWMEndOfMonth()
 		{
-			DiscordAPI.UpdateActivity("Stacking cards", $"Moon {WorldManager.instance.CurrentMonth}");
+			DiscordAPI.UpdateActivity(DiscordAPI.GetBoardString(WorldManager.instance.CurrentBoard.Id), $"Moon {WorldManager.instance.CurrentMonth}");
+		}
+
+		[HarmonyPatch(typeof(WorldManager), "GoToBoard")]
+		[HarmonyPostfix]
+		public static void DCWMGTB()
+		{
+			DiscordAPI.UpdateActivity(DiscordAPI.GetBoardString(WorldManager.instance.CurrentBoard.Id), $"Moon {WorldManager.instance.CurrentMonth}");
 		}
 	}
 }

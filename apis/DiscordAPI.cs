@@ -1,5 +1,6 @@
-using System;
 using HarmonyLib;
+using System;
+using System.Collections.Generic;
 
 namespace BerryLoaderNS
 {
@@ -7,6 +8,13 @@ namespace BerryLoaderNS
 	{
 		public static Discord.Discord client;
 		public static Discord.ActivityManager am;
+
+
+		public static Dictionary<string, string> BoardLookup = new Dictionary<string, string>()
+		{
+			{"main", "On the mainland"},
+			{"island", "On the island"}
+		};
 
 		public static void Init()
 		{
@@ -54,6 +62,11 @@ namespace BerryLoaderNS
 					BerryLoader.L.LogInfo($"discord got result: {result}");
 				});
 			}
+		}
+
+		public static string GetBoardString(string boardId)
+		{
+			return BoardLookup.ContainsKey(boardId) ? BoardLookup[boardId] : $"Board: {boardId}";
 		}
 	}
 }

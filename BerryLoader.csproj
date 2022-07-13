@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>BerryLoader</AssemblyName>
-    <Description>Stacklands Modloader</Description>
+    <Description>Stacklands modloader and modding framework</Description>
     <Version>1.0.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
@@ -16,24 +16,36 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>/dlls/Assembly-CSharp.dll</HintPath>
+     <Reference Include="Assembly-CSharp">
+      <HintPath>$(stacklandsDir)/Stacklands_Data/Managed/Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="GameScripts">
+      <HintPath>$(stacklandsDir)/Stacklands_Data/Managed/GameScripts.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SokLoc">
+      <HintPath>$(stacklandsDir)/Stacklands_Data/Managed/SokLoc.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>/dlls/Assembly-CSharp-firstpass.dll</HintPath>
+      <HintPath>$(stacklandsDir)/Stacklands_Data/Managed/Assembly-CSharp-firstpass.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>/dlls/Newtonsoft.Json.dll</HintPath>
+      <HintPath>$(stacklandsDir)/Stacklands_Data/Managed/Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>/dlls/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>$(stacklandsDir)/Stacklands_Data/Managed/Unity.TextMeshPro.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>$(stacklandsDir)/Stacklands_Data/Managed/UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="discord_game_sdk">
-      <HintPath>/dlls/discord_game_sdk.dll</HintPath>
+      <HintPath>$(stacklandsDir)/discord_game_sdk.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>

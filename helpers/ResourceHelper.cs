@@ -12,15 +12,16 @@ namespace BerryLoaderNS
 
 		public static IEnumerator GetAudioClip(string key, string path)
 		{
+			if (AudioClips.ContainsKey(key))
+				yield break;
+			//BerryLoader.L.LogInfo($"attempting to load {path} for {key}");
 			using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(path, AudioType.MPEG))
 			{
 				www.timeout = 3;
 				yield return www.SendWebRequest();
 
 				if (www.result == UnityWebRequest.Result.ConnectionError)
-				{
 					BerryLoader.L.LogError($"error while loading audio: {www.error}");
-				}
 				else
 				{
 					BerryLoader.L.LogInfo($"got audio for {key}");

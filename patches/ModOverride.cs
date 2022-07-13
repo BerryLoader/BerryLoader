@@ -4,7 +4,7 @@ namespace BerryLoaderNS
 {
 	public static partial class Patches
 	{
-		// TODO: implement translation system here!
+		// TODO: implement translation system for the entire override system
 		[HarmonyPatch(typeof(Boosterpack), "Name", MethodType.Getter)]
 		[HarmonyPatch(typeof(CardData), "Name", MethodType.Getter)]
 		[HarmonyPrefix]
