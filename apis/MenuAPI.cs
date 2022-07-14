@@ -27,14 +27,17 @@ namespace BerryLoaderNS
 			ScreenInTransitionField = typeof(GameCanvas).GetField("screenInTransition", BindingFlags.Instance | BindingFlags.NonPublic);
 		}
 
-		public static RectTransform CreateScreen(string text, bool keepVersion = false)
+		public static RectTransform CreateScreen(string text, string? versionText = null)
 		{
-			var screen = MonoBehaviour.Instantiate(GameCanvas.instance.OptionsScreen, GameCanvas.instance.transform);
+			var screen = MonoBehaviour.Instantiate(GameCanvas.instance.PauseScreen, GameCanvas.instance.transform);
 			screen.GetComponentInChildren<TextMeshProUGUI>().text = text;
 			MonoBehaviour.Destroy(screen.transform.GetChild(0).GetChild(0).GetComponent<LocSetter>());
-			MonoBehaviour.Destroy(screen.transform.GetComponent<OptionsScreen>());
-			if (!keepVersion)
-				MonoBehaviour.Destroy(screen.transform.GetChild(0).GetChild(0).GetChild(0).gameObject);
+			MonoBehaviour.Destroy(screen.transform.GetComponent<PauseScreen>());
+			if (versionText != null)
+			{
+				var version = MonoBehaviour.Instantiate(GameCanvas.instance.OptionsScreen.GetChild(0).GetChild(0).GetChild(0), screen.GetChild(0).GetChild(0));
+				version.GetComponent<TextMeshProUGUI>().text = versionText;
+			}
 			foreach (Transform child in screen.GetChild(0).GetChild(1))
 			{
 				MonoBehaviour.Destroy(child.gameObject);
