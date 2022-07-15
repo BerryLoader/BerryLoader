@@ -27,6 +27,7 @@ namespace BerryLoaderNS
 				foreach (var file in new DirectoryInfo(Path.Combine(modDir, "Cards")).GetFiles())
 				{
 					var content = File.ReadAllText(Path.Combine(modDir, "Cards", file.Name));
+					if (content == "") continue;
 					ModCard modcard = JsonConvert.DeserializeObject<ModCard>(content);
 
 					BerryLoader.L.LogInfo($"loading card: {modcard.id}");
@@ -63,6 +64,7 @@ namespace BerryLoaderNS
 				foreach (var file in new DirectoryInfo(Path.Combine(modDir, "Blueprints")).GetFiles())
 				{
 					var content = File.ReadAllText(Path.Combine(modDir, "Blueprints", file.Name));
+					if (content == "") continue;
 					ModBlueprint modblueprint = JsonConvert.DeserializeObject<ModBlueprint>(content);
 
 					BerryLoader.L.LogInfo($"loading blueprint: {modblueprint.id}");
@@ -113,6 +115,7 @@ namespace BerryLoaderNS
 				foreach (var file in new DirectoryInfo(Path.Combine(modDir, "Boosterpacks")).GetFiles())
 				{
 					var content = File.ReadAllText(Path.Combine(modDir, "Boosterpacks", file.Name));
+					if (content == "") continue;
 					ModBoosterpack modbooster = JsonConvert.DeserializeObject<ModBoosterpack>(content);
 
 					BerryLoader.L.LogInfo($"loading boosterpack: {modbooster.id}");
