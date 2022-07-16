@@ -24,43 +24,49 @@ namespace BerryLoaderNS
 
 			foreach (var modDir in BerryLoader.modDirs)
 			{
-				foreach (var file in new DirectoryInfo(Path.Combine(modDir, "Cards")).GetFiles())
+				// cant use continue here :(
+				if (Directory.Exists(Path.Combine(modDir, "Cards")))
 				{
-					var content = File.ReadAllText(Path.Combine(modDir, "Cards", file.Name));
-					if (content == "") continue;
-					ModCard modcard = JsonConvert.DeserializeObject<ModCard>(content);
-
-					BerryLoader.L.LogInfo($"loading card: {modcard.id}");
-
-					var inst = MonoBehaviour.Instantiate(wood.gameObject); // TODO: instantiate under some parent
-					CardData card = inst.GetComponent<CardData>();
-					card.Id = modcard.id;
-					ModOverride mo = card.gameObject.AddComponent<ModOverride>();
-					mo.Name = modcard.name;
-					mo.Description = modcard.description;
-					card.Value = modcard.value;
-					if (modcard.audio != null)
+					foreach (var file in new DirectoryInfo(Path.Combine(modDir, "Cards")).GetFiles())
 					{
-						card.PickupSoundGroup = PickupSoundGroup.Custom;
-						WorldManager.instance.StartCoroutine(ResourceHelper.GetAudioClip(card.Id, Path.Combine(modDir, "Sounds", modcard.audio)));
+						var content = File.ReadAllText(Path.Combine(modDir, "Cards", file.Name));
+						if (content == "") continue;
+						ModCard modcard = JsonConvert.DeserializeObject<ModCard>(content);
+
+						BerryLoader.L.LogInfo($"loading card: {modcard.id}");
+
+						var inst = MonoBehaviour.Instantiate(wood.gameObject); // TODO: instantiate under some parent
+						CardData card = inst.GetComponent<CardData>();
+						card.Id = modcard.id;
+						ModOverride mo = card.gameObject.AddComponent<ModOverride>();
+						mo.Name = modcard.name;
+						mo.Description = modcard.description;
+						card.Value = modcard.value;
+						if (modcard.audio != null)
+						{
+							card.PickupSoundGroup = PickupSoundGroup.Custom;
+							WorldManager.instance.StartCoroutine(ResourceHelper.GetAudioClip(card.Id, Path.Combine(modDir, "Sounds", modcard.audio)));
+						}
+						var tex = new Texture2D(1024, 1024); // TODO: size?
+						tex.LoadImage(File.ReadAllBytes(Path.Combine(modDir, "Images", modcard.icon)));
+						card.Icon = Sprite.Create(tex, wood.Icon.rect, wood.Icon.pivot);
+						card.MyCardType = EnumHelper.ToCardType(modcard.type);
+						card.gameObject.SetActive(false);
+						if (!modcard.cardDataScript.Equals(""))
+						{
+							var cardDataScript = BerryLoader.modTypes[modcard.cardDataScript];
+							CardData component = (CardData)inst.AddComponent(cardDataScript);
+							ReflectionHelper.CopyCardDataProps(component, card);
+							MonoBehaviour.DestroyImmediate(card);
+							component.gameObject.SetActive(false);
+							injectables.Add(component);
+						}
+						else
+							injectables.Add(card);
 					}
-					var tex = new Texture2D(1024, 1024); // TODO: size?
-					tex.LoadImage(File.ReadAllBytes(Path.Combine(modDir, "Images", modcard.icon)));
-					card.Icon = Sprite.Create(tex, wood.Icon.rect, wood.Icon.pivot);
-					card.MyCardType = EnumHelper.ToCardType(modcard.type);
-					card.gameObject.SetActive(false);
-					if (!modcard.cardDataScript.Equals(""))
-					{
-						var cardDataScript = BerryLoader.modTypes[modcard.cardDataScript];
-						CardData component = (CardData)inst.AddComponent(cardDataScript);
-						ReflectionHelper.CopyCardDataProps(component, card);
-						MonoBehaviour.DestroyImmediate(card);
-						component.gameObject.SetActive(false);
-						injectables.Add(component);
-					}
-					else
-						injectables.Add(card);
 				}
+
+				if (!Directory.Exists(Path.Combine(modDir, "Blueprints"))) continue;
 				foreach (var file in new DirectoryInfo(Path.Combine(modDir, "Blueprints")).GetFiles())
 				{
 					var content = File.ReadAllText(Path.Combine(modDir, "Blueprints", file.Name));
@@ -112,6 +118,7 @@ namespace BerryLoaderNS
 
 			foreach (var modDir in BerryLoader.modDirs)
 			{
+				if (!Directory.Exists(Path.Combine(modDir, "Boosterpacks"))) continue;
 				foreach (var file in new DirectoryInfo(Path.Combine(modDir, "Boosterpacks")).GetFiles())
 				{
 					var content = File.ReadAllText(Path.Combine(modDir, "Boosterpacks", file.Name));
