@@ -5,10 +5,12 @@
 	<h1 align="center">BerryLoader</h1>
 </div>
 
-BerryLoader is a modloader and modding framework for [Sokpop's](https://sokpop.co/) hit card-based village builder: Stacklands!
+BerryLoader is a modloader and modding framework for [Sokpop's](https://sokpop.co/) hit card-based village builder: Stacklands
 
-Stacklands is available on both [itch.io](https://sokpop.itch.io/stacklands) and [Steam](https://store.steampowered.com/app/1948280/Stacklands/).
+Stacklands is available on [itch.io](https://sokpop.itch.io/stacklands) and [Steam](https://store.steampowered.com/app/1948280/Stacklands/)
 
-## For resources and guides, please visit our [Wiki](https://github.com/BerryLoader/BerryLoader/wiki).
+## For resources and guides, please visit our [Wiki](https://github.com/BerryLoader/BerryLoader/wiki)
 
-This project was made with love for the Stacklands community. 💖💜
+If you have any questions or feedback, join us in the [#stacklands-modding](https://discord.com/channels/366954835448430592/985852934212444170) channel in the [official Sokpop Discord server](https://discord.gg/sokpop)
+
+This project was made with love for the Stacklands community 💖💜
