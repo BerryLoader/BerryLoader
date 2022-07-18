@@ -3,24 +3,6 @@ using UnityEngine;
 
 namespace BerryLoaderNS
 {
-	public class BerryLoaderMod
-	{
-		public ModManifest manifest;
-		public virtual void Init() { }
-		public virtual void PostInjection() { }
-	}
-
-	public class ModManifest
-	{
-		public string id;
-		public string name;
-		public string repo;
-		public string version;
-		public string developer;
-		public string description;
-		public Dictionary<string, string> dependencies;
-	}
-
 	public class ModOverride : MonoBehaviour
 	{
 		public string Name;
