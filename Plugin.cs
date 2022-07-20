@@ -12,11 +12,11 @@ using UnityEngine;
 
 namespace BerryLoaderNS
 {
-	[BepInPlugin("BerryLoader", "BerryLoader", "0.1.3")]
+	[BepInPlugin("BerryLoader", "BerryLoader", BerryLoader.VERSION)]
 	[BepInProcess("Stacklands.exe")]
 	public class BerryLoader : BaseUnityPlugin
 	{
-		public static string VERSION = "0.1.3";
+		public const string VERSION = "0.2.0";
 		public static BepInEx.Logging.ManualLogSource L;
 
 		public static List<string> modDirs = new List<string>();

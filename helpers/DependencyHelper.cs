@@ -1,5 +1,4 @@
 using BepInEx;
-using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Collections.Generic;

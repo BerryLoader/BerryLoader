@@ -46,7 +46,7 @@ namespace BerryLoaderNS
 			berryText.GetComponent<TextMeshProUGUI>().text = "(+BerryLoader)";
 			berryText.GetComponent<TextMeshProUGUI>().fontSize = 30;
 
-			ModOptionsScreen = MenuAPI.CreateScreen("Mod Options", versionText: $"{BerryLoader.VERSION}-pre");
+			ModOptionsScreen = MenuAPI.CreateScreen("Mod Options", versionText: BerryLoader.VERSION);
 			DumpScreen = MenuAPI.CreateScreen("Dump Assets");
 
 			var parent = ModOptionsScreen.GetChild(0).GetChild(1);

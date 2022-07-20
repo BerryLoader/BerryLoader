@@ -1,0 +1,9 @@
+{
+	"name": "BerryLoader",
+	"version_number": "0.2.0",
+	"website_url": "https://github.com/berryloader/berryloader",
+	"description": "Stacklands modding framework for custom cards, packs, and more!",
+	"dependencies": [
+		"BepInEx-BepInExPack_Stacklands-5.4.2100"
+	]
+}

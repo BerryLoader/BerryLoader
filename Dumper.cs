@@ -13,6 +13,7 @@ namespace BerryLoaderNS
 		public static void DumpTextures()
 		{
 			BerryLoader.L.LogInfo("dumping textures..");
+			InitDumps();
 			foreach (var cd in WorldManager.instance.CardDataPrefabs)
 			{
 				BerryLoader.L.LogInfo($"dumping {cd.Id}.png");
@@ -40,6 +41,7 @@ namespace BerryLoaderNS
 
 		public static void DumpBoosters()
 		{
+			InitDumps();
 			foreach (var booster in WorldManager.instance.BoosterPackPrefabs)
 			{
 				BerryLoader.L.LogInfo($"dumping {booster.Name}");
@@ -81,6 +83,7 @@ namespace BerryLoaderNS
 
 		public static void DumpBlueprints()
 		{
+			InitDumps();
 			foreach (var blueprint in WorldManager.instance.BlueprintPrefabs)
 			{
 				BerryLoader.L.LogInfo($"dumping {blueprint.Id}");
@@ -126,6 +129,11 @@ namespace BerryLoaderNS
 			RenderTexture.active = previous;
 			RenderTexture.ReleaseTemporary(renderTex);
 			return readableText;
+		}
+
+		public static void InitDumps()
+		{
+			Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "dumps"));
 		}
 	}
 }
