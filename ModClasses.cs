@@ -12,8 +12,10 @@ namespace BerryLoaderNS
 	public class ModCard
 	{
 		public string id;
-		public string name;
-		public string description;
+		public string nameTerm;
+		public string nameOverride;
+		public string descriptionTerm;
+		public string descriptionOverride;
 		public int value;
 		public string type;
 		public string icon;
@@ -24,7 +26,8 @@ namespace BerryLoaderNS
 	public class ModBlueprint
 	{
 		public string id;
-		public string name;
+		public string nameTerm;
+		public string nameOverride;
 		public int value = 1; // default? no clue if it works or not
 		public string icon;
 		public string group;

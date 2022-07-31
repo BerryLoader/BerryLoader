@@ -1,4 +1,5 @@
 using HarmonyLib;
+using System.Reflection;
 
 namespace BerryLoaderNS
 {
@@ -11,7 +12,7 @@ namespace BerryLoaderNS
 		static bool NameOverride(CardData __instance, ref string __result)
 		{
 			var ov = __instance.GetComponent<ModOverride>();
-			if (ov is not null)
+			if (ov is not null && !string.IsNullOrEmpty(ov.Name))
 			{
 				__result = ov.Name;
 				return false;
@@ -23,23 +24,16 @@ namespace BerryLoaderNS
 		[HarmonyPrefix]
 		static bool DescriptionOverride(CardData __instance, ref string __result)
 		{
-			var ov = __instance.GetComponent<ModOverride>();
-			if (ov is not null)
+			string descriptionOverride = (string)typeof(CardData).GetField("descriptionOverride", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(__instance);
+			if (!string.IsNullOrEmpty(descriptionOverride))
 			{
-				__result = ov.Description;
+				__result = descriptionOverride;
 				return false;
 			}
-			return true;
-		}
-
-		// dumbest patch in the entire codebase. should be replaced with proper localization
-		[HarmonyPatch(typeof(Subprint), "StatusName", MethodType.Getter)]
-		[HarmonyPrefix]
-		public static bool StatusOverride(Subprint __instance, ref string __result)
-		{
-			if (!SokLoc.instance.CurrentLocSet.ContainsTerm(__instance.StatusTerm))
+			var ov = __instance.GetComponent<ModOverride>();
+			if (ov is not null && !string.IsNullOrEmpty(ov.Name))
 			{
-				__result = __instance.StatusTerm;
+				__result = ov.Description;
 				return false;
 			}
 			return true;

@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,6 +15,8 @@ namespace BerryLoaderNS
 		[HarmonyPrefix]
 		static bool LoadCards(ref List<CardData> __result)
 		{
+			var descriptionOverrideField = typeof(CardData).GetField("descriptionOverride", BindingFlags.Instance | BindingFlags.NonPublic);
+
 			var injectables = new List<CardData>();
 			var cards = ((IEnumerable<CardData>)Resources.LoadAll<CardData>("Cards")).ToList<CardData>();
 
@@ -39,8 +42,10 @@ namespace BerryLoaderNS
 						CardData card = inst.GetComponent<CardData>();
 						card.Id = modcard.id;
 						ModOverride mo = card.gameObject.AddComponent<ModOverride>();
-						mo.Name = modcard.name;
-						mo.Description = modcard.description;
+						mo.Name = modcard.nameOverride;
+						mo.Description = modcard.descriptionOverride;
+						card.NameTerm = modcard.nameTerm;
+						card.DescriptionTerm = modcard.descriptionTerm;
 						card.Value = modcard.value;
 						if (modcard.audio != null)
 						{
@@ -79,7 +84,8 @@ namespace BerryLoaderNS
 					var bp = bpinst.GetComponent<Blueprint>();
 					bpinst.gameObject.SetActive(false);
 					ModOverride mo = bpinst.gameObject.AddComponent<ModOverride>();
-					mo.Name = modblueprint.name;
+					mo.Name = modblueprint.nameOverride;
+					bp.NameTerm = modblueprint.nameTerm;
 					bp.Id = modblueprint.id;
 					var tex = new Texture2D(512, 512); // TODO: size?
 					tex.LoadImage(File.ReadAllBytes(Path.Combine(modDir, "Images", modblueprint.icon)));
