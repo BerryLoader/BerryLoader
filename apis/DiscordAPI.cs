@@ -8,7 +8,7 @@ namespace BerryLoaderNS
 	{
 		public static Discord.Discord client;
 		public static Discord.ActivityManager am;
-
+		public static long? StartTimestamp = null;
 
 		public static Dictionary<string, string> BoardLookup = new Dictionary<string, string>()
 		{
@@ -50,6 +50,13 @@ namespace BerryLoaderNS
 				},
 				Instance = true
 			};
+			if (StartTimestamp != null)
+			{
+				activity.Timestamps = new Discord.ActivityTimestamps
+				{
+					Start = (Int64)StartTimestamp
+				};
+			}
 			UpdateActivity(activity);
 		}
 

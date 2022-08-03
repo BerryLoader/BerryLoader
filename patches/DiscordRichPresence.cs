@@ -1,4 +1,5 @@
 using HarmonyLib;
+using System;
 
 namespace BerryLoaderNS
 {
@@ -17,28 +18,27 @@ namespace BerryLoaderNS
 		[HarmonyPostfix]
 		public static void DCWMAwake()
 		{
+			DiscordAPI.StartTimestamp = null;
 			DiscordAPI.UpdateActivity("In the menus");
 		}
 
 		[HarmonyPatch(typeof(WorldManager), "Play")]
+		[HarmonyPatch(typeof(WorldManager), "GoToBoard")]
 		[HarmonyPostfix]
-		public static void DCWMPlay()
+		public static void UpdatePresence1()
 		{
-			DiscordAPI.UpdateActivity(DiscordAPI.GetBoardString(WorldManager.instance.CurrentBoard.Id), $"Moon {WorldManager.instance.CurrentMonth}");
+			if (DiscordAPI.StartTimestamp == null)
+				DiscordAPI.StartTimestamp = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+			DiscordAPI.UpdateActivity($"{DiscordAPI.GetBoardString(WorldManager.instance.CurrentBoard.Id)} | Moon {WorldManager.instance.CurrentMonth}");
 		}
 
 		[HarmonyPatch(typeof(WorldManager), "EndOfMonth")]
 		[HarmonyPrefix]
-		public static void DCWMEndOfMonth()
+		public static void UpdatePresence2()
 		{
-			DiscordAPI.UpdateActivity(DiscordAPI.GetBoardString(WorldManager.instance.CurrentBoard.Id), $"Moon {WorldManager.instance.CurrentMonth}");
-		}
-
-		[HarmonyPatch(typeof(WorldManager), "GoToBoard")]
-		[HarmonyPostfix]
-		public static void DCWMGTB()
-		{
-			DiscordAPI.UpdateActivity(DiscordAPI.GetBoardString(WorldManager.instance.CurrentBoard.Id), $"Moon {WorldManager.instance.CurrentMonth}");
+			if (DiscordAPI.StartTimestamp == null)
+				DiscordAPI.StartTimestamp = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+			DiscordAPI.UpdateActivity($"{DiscordAPI.GetBoardString(WorldManager.instance.CurrentBoard.Id)} | Moon {WorldManager.instance.CurrentMonth}");
 		}
 	}
 }
