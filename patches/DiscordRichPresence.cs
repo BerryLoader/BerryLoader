@@ -29,7 +29,7 @@ namespace BerryLoaderNS
 		{
 			if (DiscordAPI.StartTimestamp == null)
 				DiscordAPI.StartTimestamp = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-			DiscordAPI.UpdateActivity($"{DiscordAPI.GetBoardString(WorldManager.instance.CurrentBoard.Id)} | Moon {WorldManager.instance.CurrentMonth}");
+			DiscordAPI.UpdateActivity($"{DiscordAPI.GetBoardString(WorldManager.instance.CurrentBoard.Id)} | 🌙 {WorldManager.instance.CurrentMonth}");
 		}
 
 		[HarmonyPatch(typeof(WorldManager), "EndOfMonth")]
@@ -38,7 +38,7 @@ namespace BerryLoaderNS
 		{
 			if (DiscordAPI.StartTimestamp == null)
 				DiscordAPI.StartTimestamp = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-			DiscordAPI.UpdateActivity($"{DiscordAPI.GetBoardString(WorldManager.instance.CurrentBoard.Id)} | Moon {WorldManager.instance.CurrentMonth}");
+			DiscordAPI.UpdateActivity($"{DiscordAPI.GetBoardString(WorldManager.instance.CurrentBoard.Id)} | 🌙 {WorldManager.instance.CurrentMonth}");
 		}
 	}
 }

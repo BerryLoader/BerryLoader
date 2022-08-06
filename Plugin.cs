@@ -56,6 +56,8 @@ namespace BerryLoaderNS
 				.Select(x => x.Value.Instance)
 				.ToList();
 
+			List<Type> foundStatusEffects = new List<Type>();
+
 			foreach (var plugin in berryPlugins)
 			{
 				L.LogInfo($"found BIE plugin: {plugin.Info.Metadata.Name} | Directory: {Directory.GetParent(plugin.Info.Location)}");
@@ -65,8 +67,13 @@ namespace BerryLoaderNS
 				{
 					if (typeof(CardData).IsAssignableFrom(t))
 					{
-						L.LogInfo($"Found CardData in BIE plugin: {t}");
+						L.LogInfo($"Found CardData: {t}");
 						InteractionAPI.CardDatas.Add(t);
+					}
+					if (t.IsSubclassOf(typeof(StatusEffect)))
+					{
+						L.LogInfo($"Found StatusEffect: {t}");
+						foundStatusEffects.Add(t);
 					}
 					modTypes[t.ToString()] = t;
 				}
@@ -78,7 +85,14 @@ namespace BerryLoaderNS
 				{
 					InteractionAPI.CardDatas.Add(t);
 				}
+				if (t.IsSubclassOf(typeof(StatusEffect)))
+				{
+					foundStatusEffects.Add(t);
+				}
 			}
+
+			// StatusEffect.InitStatusEffectTypes only searches the GameScripts assembly, so this is required for the game to recognize modded status effects
+			typeof(StatusEffect).GetField("statusEffectTypes", BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, foundStatusEffects);
 
 			InteractionAPI.Init();
 			DiscordAPI.Init();
