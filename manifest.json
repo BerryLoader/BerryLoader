@@ -1,6 +1,6 @@
 {
 	"name": "BerryLoader",
-	"version_number": "0.3.0",
+	"version_number": "0.4.0",
 	"website_url": "https://github.com/berryloader/berryloader",
 	"description": "Stacklands modding framework for custom cards, packs, and more!",
 	"dependencies": [
