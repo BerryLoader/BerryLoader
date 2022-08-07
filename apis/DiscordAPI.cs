@@ -71,9 +71,8 @@ namespace BerryLoaderNS
 			}
 		}
 
-		public static string GetBoardString(string boardId)
-		{
-			return BoardLookup.ContainsKey(boardId) ? BoardLookup[boardId] : $"Board: {boardId}";
-		}
+		public static string GetBoardString(string boardId) => BoardLookup.ContainsKey(boardId) ? BoardLookup[boardId] : $"Board: {boardId}";
+
+		public static string GetMoon() => BerryLoader.configUseEmoji.Value ? "🌙" : "Moon";
 	}
 }

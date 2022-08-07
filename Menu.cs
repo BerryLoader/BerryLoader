@@ -32,6 +32,7 @@ namespace BerryLoaderNS
 		public CustomButton skipIntroButton;
 		public CustomButton compactTooltipsButton;
 		public CustomButton disablePauseTextButton;
+		public CustomButton useEmojiButton;
 		public CustomButton dumpScreenButton;
 
 		public CustomButton dumpTexturesButton;
@@ -59,6 +60,8 @@ namespace BerryLoaderNS
 			compactTooltipsButton = MenuAPI.CreateConfigButton(parent, "Compact Tooltips", BerryLoader.configCompactTooltips);
 
 			disablePauseTextButton = MenuAPI.CreateConfigButton(parent, "Disable \"Paused\" text", BerryLoader.configDisablePauseText);
+
+			useEmojiButton = MenuAPI.CreateConfigButton(parent, "Use emojis in Discord rich presence", BerryLoader.configUseEmoji);
 
 			MenuAPI.CreateSpacer(parent);
 

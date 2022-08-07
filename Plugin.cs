@@ -25,6 +25,7 @@ namespace BerryLoaderNS
 		public static ConfigEntry<bool> configSkipIntro;
 		public static ConfigEntry<bool> configCompactTooltips;
 		public static ConfigEntry<bool> configDisablePauseText;
+		public static ConfigEntry<bool> configUseEmoji;
 
 		public static Harmony HarmonyInstance;
 
@@ -37,6 +38,7 @@ namespace BerryLoaderNS
 			configSkipIntro = Config.Bind("Patches", "SkipIntro", false, "Enable intro skip");
 			configCompactTooltips = Config.Bind("Patches", "CompactTooltips", false, "Enable compact tooltips");
 			configDisablePauseText = Config.Bind("Patches", "DisablePauseText", false, "Disable flashing pause text");
+			configUseEmoji = Config.Bind("Patches", "UseEmoji", true, "Use emojis in the Discord rich presence");
 			L.LogInfo("BerryLoader is loaded..");
 
 			HarmonyInstance.PatchAll(typeof(BerryLoader));
