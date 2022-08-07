@@ -57,9 +57,9 @@ namespace BerryLoaderNS
 						card.Icon = Sprite.Create(tex, wood.Icon.rect, wood.Icon.pivot);
 						card.MyCardType = EnumHelper.ToCardType(modcard.type);
 						card.gameObject.SetActive(false);
-						if (!modcard.cardDataScript.Equals(""))
+						if (!modcard.script.Equals(""))
 						{
-							var cardDataScript = BerryLoader.modTypes[modcard.cardDataScript];
+							var cardDataScript = BerryLoader.modTypes[modcard.script];
 							CardData component = (CardData)inst.AddComponent(cardDataScript);
 							ReflectionHelper.CopyCardDataProps(component, card);
 							MonoBehaviour.DestroyImmediate(card);

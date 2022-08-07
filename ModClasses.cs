@@ -20,7 +20,7 @@ namespace BerryLoaderNS
 		public string type;
 		public string icon;
 		public string audio;
-		public string cardDataScript = "";
+		public string script = "";
 	}
 
 	public class ModBlueprint
