@@ -24,7 +24,7 @@ namespace BerryLoaderNS
 				client = new Discord.Discord(974015953782341692, (UInt64)Discord.CreateFlags.NoRequireDiscord);
 				am = client.GetActivityManager();
 			}
-			catch (Discord.ResultException e)
+			catch (Discord.ResultException)
 			{
 				BerryLoader.L.LogInfo("discord is not running");
 			}

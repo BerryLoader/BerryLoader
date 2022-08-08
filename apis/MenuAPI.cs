@@ -27,7 +27,7 @@ namespace BerryLoaderNS
 			ScreenInTransitionField = typeof(GameCanvas).GetField("screenInTransition", BindingFlags.Instance | BindingFlags.NonPublic);
 		}
 
-		public static RectTransform CreateScreen(string text, string? versionText = null)
+		public static RectTransform CreateScreen(string text, string versionText = null)
 		{
 			var screen = MonoBehaviour.Instantiate(GameCanvas.instance.PauseScreen, GameCanvas.instance.transform);
 			screen.GetComponentInChildren<TextMeshProUGUI>().text = text;
