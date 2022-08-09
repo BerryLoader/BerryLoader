@@ -6,6 +6,8 @@ namespace BerryLoaderNS
 {
 	public static partial class Patches
 	{
+		static FieldInfo GameCardPropBlock = typeof(GameCard).GetField("propBlock", BindingFlags.Instance | BindingFlags.NonPublic);
+
 		// TODO: implement translation system for the entire override system
 		[HarmonyPatch(typeof(Boosterpack), "Name", MethodType.Getter)]
 		[HarmonyPatch(typeof(CardData), "Name", MethodType.Getter)]
@@ -46,7 +48,7 @@ namespace BerryLoaderNS
 		static bool SetColorsOverride(GameCard __instance)
 		{
 			// why is there so much hardcoding in this function :((
-			MaterialPropertyBlock propBlock = (MaterialPropertyBlock)typeof(GameCard).GetField("propBlock", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(__instance);
+			MaterialPropertyBlock propBlock = (MaterialPropertyBlock)GameCardPropBlock.GetValue(__instance);
 			Color? color = ColorManager.instance.DefaultCard;
 			Color? color2 = ColorManager.instance.DefaultCard2;
 			Color? iconColor = ColorManager.instance.DefaultCardIcon;
