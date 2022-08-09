@@ -7,6 +7,9 @@ namespace BerryLoaderNS
 	{
 		public string Name;
 		public string Description;
+		public Color? Color;
+		public Color? Color2;
+		public Color? IconColor;
 	}
 
 	public class ModCard
