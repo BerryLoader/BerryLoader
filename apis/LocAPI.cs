@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -8,22 +9,33 @@ namespace BerryLoaderNS
 {
 	public static class LocAPI
 	{
+		public static bool Injected = false;
+		public static List<string> Injectables = new List<string>();
+
 		public static void LoadTsvFromFile(string path)
 		{
 			var data = File.ReadAllText(path);
-			string[][] locTable = ParseTableFromTsv(data);
-			SokLoc.instance.LanguageChanged += (() => { LoadLoc(locTable); });
-			LoadLoc(locTable);
+			Proceed(data);
 		}
 
 		public static void LoadTsvFromGoogleSheets(string url)
 		{
 			WorldManager.instance.StartCoroutine(GetRequest(url, ((string data) =>
 			{
-				string[][] locTable = ParseTableFromTsv(data);
-				SokLoc.instance.LanguageChanged += (() => { LoadLoc(locTable); });
-				LoadLoc(locTable);
+				Proceed(data);
 			})));
+		}
+
+		internal static void Proceed(string data)
+		{
+			if (!Injected)
+			{
+				Injectables.Add(data);
+				return;
+			}
+			string[][] locTable = ParseTableFromTsv(data);
+			SokLoc.instance.LanguageChanged += (() => { LoadLoc(locTable); });
+			LoadLoc(locTable);
 		}
 
 		private static void LoadLoc(string[][] locTable)
@@ -42,6 +54,8 @@ namespace BerryLoaderNS
 				if (!string.IsNullOrEmpty(text))
 				{
 					SokTerm sokTerm = new SokTerm(SokLoc.instance.CurrentLocSet, text, fullText);
+					if (SokLoc.instance.CurrentLocSet.TermLookup.ContainsKey(text)) // 1 check should be enough since they arent set seperately
+						continue;
 					SokLoc.instance.CurrentLocSet.AllTerms.Add(sokTerm);
 					SokLoc.instance.CurrentLocSet.TermLookup.Add(text, sokTerm);
 				}
@@ -50,6 +64,7 @@ namespace BerryLoaderNS
 
 		private static string[][] ParseTableFromTsv(string tsv)
 		{
+			tsv = tsv.TrimEnd('\n');
 			string[] array = tsv.Split('\n');
 			string[][] array2 = new string[array.Length][];
 			for (int i = 0; i < array.Length; i++)

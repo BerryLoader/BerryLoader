@@ -34,7 +34,7 @@ namespace BerryLoaderNS
 				return false;
 			}
 			var ov = __instance.GetComponent<ModOverride>();
-			if (ov is not null && !string.IsNullOrEmpty(ov.Name))
+			if (ov is not null && !string.IsNullOrEmpty(ov.Description))
 			{
 				__result = ov.Description;
 				return false;
