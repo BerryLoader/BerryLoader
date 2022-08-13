@@ -1,5 +1,6 @@
 using HarmonyLib;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 using System.Linq;
@@ -62,6 +63,16 @@ namespace BerryLoaderNS
 							var cardDataScript = BerryLoader.modTypes[modcard.script];
 							CardData component = (CardData)inst.AddComponent(cardDataScript);
 							ReflectionHelper.CopyCardDataProps(component, card);
+							if (modcard.ExtraProps != null)
+							{
+								foreach (KeyValuePair<string, JToken> entry in modcard.ExtraProps)
+								{
+									var key = entry.Key.TrimStart('_');
+									FieldInfo field = component.GetType().GetField(key);
+									BerryLoader.L.LogInfo($"found Extraprop {key} ({field.FieldType}): {entry.Value.ToString()}");
+									field.SetValue(component, entry.Value.ToObject(field.FieldType));
+								}
+							}
 							MonoBehaviour.DestroyImmediate(card);
 							component.gameObject.SetActive(false);
 							injectables.Add(component);
