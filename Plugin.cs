@@ -26,6 +26,7 @@ namespace BerryLoaderNS
 		public static ConfigEntry<bool> configCompactTooltips;
 		public static ConfigEntry<bool> configDisablePauseText;
 		public static ConfigEntry<bool> configUseEmoji;
+		public static ConfigEntry<bool> configVerboseLogging;
 
 		public static Harmony HarmonyInstance;
 
@@ -39,6 +40,7 @@ namespace BerryLoaderNS
 			configCompactTooltips = Config.Bind("Patches", "CompactTooltips", false, "Enable compact tooltips");
 			configDisablePauseText = Config.Bind("Patches", "DisablePauseText", false, "Disable flashing pause text");
 			configUseEmoji = Config.Bind("Patches", "UseEmoji", true, "Use emojis in the Discord rich presence");
+			configVerboseLogging = Config.Bind("Logging", "VerboseLogging", false, "Enable more verbose logging, useful for debugging");
 			L.LogInfo("BerryLoader is loaded..");
 
 			HarmonyInstance.PatchAll(typeof(BerryLoader));
@@ -71,13 +73,13 @@ namespace BerryLoaderNS
 					{
 						L.LogInfo($"Found CardData: {t}");
 						InteractionAPI.CardDatas.Add(t);
+						modTypes[t.ToString()] = t;
 					}
 					if (t.IsSubclassOf(typeof(StatusEffect)))
 					{
 						L.LogInfo($"Found StatusEffect: {t}");
 						foundStatusEffects.Add(t);
 					}
-					modTypes[t.ToString()] = t;
 				}
 			}
 
@@ -86,6 +88,7 @@ namespace BerryLoaderNS
 				if (typeof(CardData).IsAssignableFrom(t))
 				{
 					InteractionAPI.CardDatas.Add(t);
+					modTypes[$"Stacklands.{t.ToString()}"] = t;
 				}
 				if (t.IsSubclassOf(typeof(StatusEffect)))
 				{

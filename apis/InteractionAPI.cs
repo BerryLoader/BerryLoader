@@ -28,7 +28,8 @@ namespace BerryLoaderNS
 			var prefix = new HarmonyMethod(typeof(InteractionAPI), "CanHaveCardPatch");
 			foreach (var t in CardDatas)
 			{
-				BerryLoader.L.LogInfo($"Patching CanHaveCard on {t}");
+				if (BerryLoader.configVerboseLogging.Value == true)
+					BerryLoader.L.LogInfo($"Patching CanHaveCard on {t}");
 				var chcm = AccessTools.DeclaredMethod(t, "CanHaveCard");
 				if (chcm != null)
 					BerryLoader.HarmonyInstance.Patch(chcm, prefix);
