@@ -12,6 +12,7 @@ namespace BerryLoaderNS
 		public Color? Color;
 		public Color? Color2;
 		public Color? IconColor;
+		public Dictionary<int, string> SubprintStatuses = new Dictionary<int, string>();
 	}
 
 	public class ModCard
@@ -37,7 +38,6 @@ namespace BerryLoaderNS
 		public int value = 1; // default? no clue if it works or not
 		public string icon;
 		public string group;
-		public string stackText;
 		public List<ModSubprint> subprints;
 	}
 
@@ -48,7 +48,8 @@ namespace BerryLoaderNS
 		public string resultCard;
 		public string extraResultCards; //?? confusing? doesnt seem to do anything useful but yet it does??
 		public float time;
-		public string status; // translation
+		public string statusTerm;
+		public string statusOverride;
 	}
 
 	public class ModBoosterpack

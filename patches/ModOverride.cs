@@ -8,9 +8,9 @@ namespace BerryLoaderNS
 	{
 		static FieldInfo GameCardPropBlock = typeof(GameCard).GetField("propBlock", BindingFlags.Instance | BindingFlags.NonPublic);
 
-		// TODO: implement translation system for the entire override system
 		[HarmonyPatch(typeof(Boosterpack), "Name", MethodType.Getter)]
 		[HarmonyPatch(typeof(CardData), "Name", MethodType.Getter)]
+		[HarmonyPatch(typeof(Blueprint), "KnowledgeName", MethodType.Getter)]
 		[HarmonyPrefix]
 		static bool NameOverride(CardData __instance, ref string __result)
 		{
@@ -18,6 +18,19 @@ namespace BerryLoaderNS
 			if (ov is not null && !string.IsNullOrEmpty(ov.Name))
 			{
 				__result = ov.Name;
+				return false;
+			}
+			return true;
+		}
+
+		[HarmonyPatch(typeof(Subprint), "StatusName", MethodType.Getter)]
+		[HarmonyPrefix]
+		static bool StatusOverride(Subprint __instance, ref string __result)
+		{
+			var ov = __instance.ParentBlueprint.GetComponent<ModOverride>();
+			if (ov is not null && ov.SubprintStatuses.ContainsKey(__instance.SubprintIndex))
+			{
+				__result = ov.SubprintStatuses[__instance.SubprintIndex];
 				return false;
 			}
 			return true;

@@ -69,7 +69,8 @@ namespace BerryLoaderNS
 								{
 									var key = entry.Key.TrimStart('_');
 									FieldInfo field = component.GetType().GetField(key);
-									BerryLoader.L.LogInfo($"found Extraprop {key} ({field.FieldType}): {entry.Value.ToString()}");
+									if (BerryLoader.configVerboseLogging.Value)
+										BerryLoader.L.LogInfo($"found Extraprop {key} ({field.FieldType}): {entry.Value.ToString()}");
 									field.SetValue(component, entry.Value.ToObject(field.FieldType));
 								}
 							}
@@ -89,7 +90,7 @@ namespace BerryLoaderNS
 					if (content == "") continue;
 					ModBlueprint modblueprint = JsonConvert.DeserializeObject<ModBlueprint>(content);
 
-					BerryLoader.L.LogInfo($"loading blueprint: {modblueprint.id}");
+					BerryLoader.L.LogInfo($"loading blueprint: {modblueprint.id} | {shed}");
 
 					var bpinst = MonoBehaviour.Instantiate(shed); // TODO: instantiate under some parent
 					var bp = bpinst.GetComponent<Blueprint>();
@@ -104,14 +105,17 @@ namespace BerryLoaderNS
 					bp.BlueprintGroup = EnumHelper.ToBlueprintGroup(modblueprint.group);
 					//bp.StackPostText = modblueprint.stackText; // gone?
 					bp.Subprints = new List<Subprint>();
-					foreach (ModSubprint ms in modblueprint.subprints)
+					for (int i = 0; i < modblueprint.subprints.Count; i++)
 					{
+						ModSubprint ms = modblueprint.subprints[i];
 						var sp = new Subprint();
 						sp.RequiredCards = ms.requiredCards.Split(',').Select(str => str.Trim()).ToArray();
 						sp.CardsToRemove = ms.cardsToRemove.Split(',').Select(str => str.Trim()).ToArray();
 						sp.ResultCard = ms.resultCard;
 						sp.Time = ms.time;
-						sp.StatusTerm = ms.status;
+						sp.StatusTerm = ms.statusTerm;
+						if (!string.IsNullOrEmpty(ms.statusOverride))
+							mo.SubprintStatuses.Add(i, ms.statusOverride);
 						sp.ExtraResultCards = ms.extraResultCards.Split(',').Select(str => str.Trim()).ToArray(); // this implementation could be wrong; needs more info
 						bp.Subprints.Add(sp);
 					}
