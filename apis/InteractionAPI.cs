@@ -30,7 +30,7 @@ namespace BerryLoaderNS
 			{
 				if (BerryLoader.configVerboseLogging.Value == true)
 					BerryLoader.L.LogInfo($"Patching CanHaveCard on {t}");
-				var chcm = AccessTools.DeclaredMethod(t, "CanHaveCard");
+				var chcm = t.GetMethod("CanHaveCard", AccessTools.allDeclared);
 				if (chcm != null)
 					BerryLoader.HarmonyInstance.Patch(chcm, prefix);
 			}
