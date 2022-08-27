@@ -60,6 +60,11 @@ namespace BerryLoaderNS
 						card.gameObject.SetActive(false);
 						if (!modcard.script.Equals(""))
 						{
+							if (!BerryLoader.modTypes.ContainsKey(modcard.script))
+							{
+								BerryLoader.L.LogError($"Could not find script {modcard.script}, the card will not be loaded");
+								continue;
+							}
 							var cardDataScript = BerryLoader.modTypes[modcard.script];
 							CardData component = (CardData)inst.AddComponent(cardDataScript);
 							ReflectionHelper.CopyCardDataProps(component, card);
@@ -67,11 +72,18 @@ namespace BerryLoaderNS
 							{
 								foreach (KeyValuePair<string, JToken> entry in modcard.ExtraProps)
 								{
+									if (!entry.Key.StartsWith("_"))
+										continue;
 									var key = entry.Key.TrimStart('_');
 									FieldInfo field = component.GetType().GetField(key);
-									if (BerryLoader.configVerboseLogging.Value)
-										BerryLoader.L.LogInfo($"found Extraprop {key} ({field.FieldType}): {entry.Value.ToString()}");
-									field.SetValue(component, entry.Value.ToObject(field.FieldType));
+									if (field != null)
+									{
+										if (BerryLoader.configVerboseLogging.Value)
+											BerryLoader.L.LogInfo($"found Extraprop {key} ({field.FieldType}): {entry.Value.ToString()}");
+										field.SetValue(component, entry.Value.ToObject(field.FieldType));
+									}
+									else
+										BerryLoader.L.LogError($"Property {key} doesn't exist on {component.GetType()}");
 								}
 							}
 							MonoBehaviour.DestroyImmediate(card);
