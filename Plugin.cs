@@ -31,6 +31,7 @@ namespace BerryLoaderNS
 		public static Harmony HarmonyInstance;
 
 		private static bool Inited = false;
+		public static bool ValidateGameData = false;
 
 		private void Awake()
 		{

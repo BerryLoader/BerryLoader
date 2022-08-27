@@ -212,9 +212,12 @@ namespace BerryLoaderNS
 		[HarmonyPostfix]
 		public static void ValidateData(WorldManager __instance)
 		{
-			BerryLoader.L.LogInfo("validating game data..");
-			var validator = new GameDataValidator(__instance.GameDataLoader);
-			validator.Check();
+			if (BerryLoader.ValidateGameData)
+			{
+				BerryLoader.L.LogInfo("validating game data..");
+				var validator = new GameDataValidator(__instance.GameDataLoader);
+				validator.Check();
+			}
 		}
 
 		// this patch removes the following lines from VerifyAllCardsReferenced, since the file doesnt exist, and therefore throws an error:
