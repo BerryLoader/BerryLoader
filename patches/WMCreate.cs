@@ -17,6 +17,8 @@ namespace BerryLoaderNS
 		[HarmonyPostfix]
 		static void WMCC(ref CardData __result)
 		{
+			if (__result == null)
+				return;
 			var card = __result;
 			if (card.gameObject.GetComponent<ModOverride>() != null && card.gameObject.GetComponent<Blueprint>() != null)
 				card.gameObject.GetComponent<ModOverride>().Description = card.gameObject.GetComponent<Blueprint>().GetText();

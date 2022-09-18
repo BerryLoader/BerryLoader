@@ -121,14 +121,14 @@ namespace BerryLoaderNS
 					{
 						ModSubprint ms = modblueprint.subprints[i];
 						var sp = new Subprint();
-						sp.RequiredCards = ms.requiredCards.Split(',').Select(str => str.Trim()).ToArray();
-						sp.CardsToRemove = ms.cardsToRemove.Split(',').Select(str => str.Trim()).ToArray();
+						sp.RequiredCards = ms.requiredCards.Split(',').Select(str => str.Trim()).Where(str => !string.IsNullOrEmpty(str)).ToArray();
+						sp.CardsToRemove = ms.cardsToRemove?.Split(',').Select(str => str.Trim()).Where(str => !string.IsNullOrEmpty(str)).ToArray();
 						sp.ResultCard = ms.resultCard;
 						sp.Time = ms.time;
 						sp.StatusTerm = ms.statusTerm;
 						if (!string.IsNullOrEmpty(ms.statusOverride))
 							mo.SubprintStatuses.Add(i, ms.statusOverride);
-						sp.ExtraResultCards = ms.extraResultCards.Split(',').Select(str => str.Trim()).ToArray(); // this implementation could be wrong; needs more info
+						sp.ExtraResultCards = ms.extraResultCards?.Split(',').Select(str => str.Trim()).Where(str => !string.IsNullOrEmpty(str)).ToArray(); // this implementation could be wrong; needs more info
 						bp.Subprints.Add(sp);
 					}
 					injectables.Add(bp);
