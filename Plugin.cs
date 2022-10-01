@@ -18,6 +18,7 @@ namespace BerryLoaderNS
 	{
 		public const string VERSION = "0.5.2";
 		public static BepInEx.Logging.ManualLogSource L;
+		public static BerryLoader instance;
 
 		public static List<string> modDirs = new List<string>();
 		public static Dictionary<string, Type> modTypes = new Dictionary<string, Type>();
@@ -35,6 +36,7 @@ namespace BerryLoaderNS
 
 		private void Awake()
 		{
+			instance = this;
 			HarmonyInstance = new Harmony("BerryLoader");
 			L = Logger;
 			configSkipIntro = Config.Bind("Patches", "SkipIntro", false, "Enable intro skip");

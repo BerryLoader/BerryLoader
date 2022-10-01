@@ -20,7 +20,7 @@ namespace BerryLoaderNS
 
 		public static void LoadTsvFromGoogleSheets(string url)
 		{
-			WorldManager.instance.StartCoroutine(GetRequest(url, ((string data) =>
+			BerryLoader.instance.StartCoroutine(GetRequest(url, ((string data) =>
 			{
 				Proceed(data);
 			})));
