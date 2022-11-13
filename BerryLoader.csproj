@@ -44,6 +44,10 @@
       <HintPath>$(stacklandsDir)/Stacklands_Data/Managed/UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="ShapesRuntime">
+      <HintPath>$(stacklandsDir)/Stacklands_Data/Managed/ShapesRuntime.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="discord_game_sdk">
       <HintPath>$(stacklandsDir)/discord_game_sdk.dll</HintPath>
       <Private>False</Private>

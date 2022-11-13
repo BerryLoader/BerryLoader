@@ -12,6 +12,9 @@ namespace BerryLoaderNS
 		public Color? Color;
 		public Color? Color2;
 		public Color? IconColor;
+		public float? ShineStrength;
+		public float? BigShineStrength;
+		public bool? Foil;
 		public Dictionary<int, string> SubprintStatuses = new Dictionary<int, string>();
 	}
 

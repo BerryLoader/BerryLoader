@@ -1,6 +1,8 @@
 using HarmonyLib;
+using Shapes;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace BerryLoaderNS
 {
@@ -58,52 +60,59 @@ namespace BerryLoaderNS
 		// this could be a transpiler but meh
 		[HarmonyPatch(typeof(GameCard), "SetColors")]
 		[HarmonyPrefix]
-		static bool SetColorsOverride(GameCard __instance)
+		static bool SetColorsOverride(GameCard __instance, MaterialPropertyBlock ___propBlock)
 		{
 			// why is there so much hardcoding in this function :((
-			MaterialPropertyBlock propBlock = (MaterialPropertyBlock)GameCardPropBlock.GetValue(__instance);
-			Color? color = ColorManager.instance.DefaultCard;
-			Color? color2 = ColorManager.instance.DefaultCard2;
-			Color? iconColor = ColorManager.instance.DefaultCardIcon;
-			if (__instance.CardData.MyCardType == CardType.Rumors)
+			CardData CardData = __instance.CardData;
+			MaterialPropertyBlock propBlock = ___propBlock;
+			Color color = ColorManager.instance.DefaultCard;
+			Color color2 = ColorManager.instance.DefaultCard2;
+			Color iconColor = ColorManager.instance.DefaultCardIcon;
+			if (CardData.MyCardType == CardType.Rumors)
 			{
 				color = ColorManager.instance.RumorCard;
 				color2 = ColorManager.instance.RumorCard2;
 				iconColor = ColorManager.instance.RumorCardIcon;
 			}
-			else if (__instance.CardData.MyCardType == CardType.Locations)
+			else if (CardData.MyCardType == CardType.Locations)
 			{
 				color = ColorManager.instance.LocationCard;
 				color2 = ColorManager.instance.LocationCard2;
 				iconColor = ColorManager.instance.LocationCardIcon;
 			}
-			else if ((__instance.CardData is Mob mob && mob.IsAggressive) || __instance.CardData is StrangePortal || __instance.CardData is PirateBoat)
-			{
-				color = ColorManager.instance.AggresiveMobCard;
-				color2 = ColorManager.instance.AggresiveMobCard2;
-				iconColor = ColorManager.instance.AggresiveMobIcon;
-			}
-			else if (__instance.CardData.MyCardType == CardType.Fish)
-			{
-				color = ColorManager.instance.FishCard;
-				color2 = ColorManager.instance.FishCard2;
-				iconColor = ColorManager.instance.FishCardIcon;
-			}
-			else if (__instance.CardData.Id == "gold" || __instance.CardData.Id == "goblet" || __instance.CardData.Id == "key" || __instance.CardData.Id == "treasure_chest" || __instance.CardData.Id == "temple" || __instance.CardData.Id == "shell" || __instance.CardData.Id == "sacred_key" || __instance.CardData.Id == "sacred_chest" || __instance.CardData.Id == "island_relic" || __instance.CardData.Id == "compass")
+			else if (CardData is Mimic mimic && !mimic.WasDetected)
 			{
 				color = ColorManager.instance.GoldCard;
 				color2 = ColorManager.instance.GoldCard2;
 				iconColor = ColorManager.instance.GoldCardIcon;
 			}
-			else if (__instance.CardData.Id == "corpse")
+			else if ((CardData is Mob mob && mob.IsAggressive) || CardData is StrangePortal || CardData is PirateBoat)
+			{
+				color = ColorManager.instance.AggresiveMobCard;
+				color2 = ColorManager.instance.AggresiveMobCard2;
+				iconColor = ColorManager.instance.AggresiveMobIcon;
+			}
+			else if (CardData.MyCardType == CardType.Fish)
+			{
+				color = ColorManager.instance.FishCard;
+				color2 = ColorManager.instance.FishCard2;
+				iconColor = ColorManager.instance.FishCardIcon;
+			}
+			else if (CardData.Id == "gold" || CardData.Id == "goblet" || CardData.Id == "key" || CardData.Id == "treasure_chest" || CardData.Id == "temple" || CardData.Id == "shell" || CardData.Id == "sacred_key" || CardData.Id == "sacred_chest" || CardData.Id == "island_relic" || CardData.Id == "compass")
+			{
+				color = ColorManager.instance.GoldCard;
+				color2 = ColorManager.instance.GoldCard2;
+				iconColor = ColorManager.instance.GoldCardIcon;
+			}
+			else if (CardData.Id == "corpse")
 			{
 				color = ColorManager.instance.CorpseCard;
 				color2 = ColorManager.instance.CorpseCard2;
 				iconColor = ColorManager.instance.CorpseCardIcon;
 			}
-			else if (__instance.CardData.MyCardType == CardType.Structures)
+			else if (CardData.MyCardType == CardType.Structures)
 			{
-				if (__instance.CardData.IsBuilding)
+				if (CardData.IsBuilding)
 				{
 					color = ColorManager.instance.BuildingCard;
 					color2 = ColorManager.instance.BuildingCard2;
@@ -116,49 +125,59 @@ namespace BerryLoaderNS
 					iconColor = ColorManager.instance.StructureCardIcon;
 				}
 			}
-			else if (__instance.CardData.MyCardType == CardType.Ideas)
+			else if (CardData.MyCardType == CardType.Ideas)
 			{
 				color = ColorManager.instance.BlueprintCard;
 				color2 = ColorManager.instance.BlueprintCard2;
 				iconColor = ColorManager.instance.BlueprintCardIcon;
 			}
-			else if (__instance.CardData.MyCardType == CardType.Resources)
+			else if (CardData.MyCardType == CardType.Resources)
 			{
 				color = ColorManager.instance.ResourceCard;
 				color2 = ColorManager.instance.ResourceCard2;
 				iconColor = ColorManager.instance.ResourceCardIcon;
 			}
-			else if (__instance.CardData.MyCardType == CardType.Food)
+			else if (CardData.MyCardType == CardType.Food)
 			{
 				color = ColorManager.instance.FoodCard;
 				color2 = ColorManager.instance.FoodCard2;
 				iconColor = ColorManager.instance.FoodCardIcon;
 			}
-			else if (__instance.CardData.MyCardType == CardType.Mobs)
+			else if (CardData.MyCardType == CardType.Mobs)
 			{
 				color = ColorManager.instance.MobCard;
 				color2 = ColorManager.instance.MobCard2;
 				iconColor = ColorManager.instance.MobCardIcon;
 			}
+			else if (CardData.MyCardType == CardType.Equipable)
+			{
+				color = ColorManager.instance.EquipableCard;
+				color2 = ColorManager.instance.EquipableCard2;
+				iconColor = ColorManager.instance.EquipableCardIcon;
+			}
 			var mo = __instance.CardData.GetComponent<ModOverride>();
 			if (mo != null)
 			{
 				color = mo.Color ?? color;
-				color2 = mo.Color2 ?? color2;
+				iconColor = mo.Color2 ?? iconColor;
 				iconColor = mo.IconColor ?? iconColor;
 			}
 			__instance.CombatStatusCircle.color = __instance.CombatCircleColor;
-			//__instance.CombatStatusIcon.color = Color.red;
+			__instance.CombatStatusCircle.color = Color.red;
 			if (__instance.IsHit)
 			{
-				Color color4 = (__instance.CombatStatusCircle.color = /*(__instance.CombatStatusIcon.color =*/ Color.white)/*)*/; // LMAO
+				__instance.CombatStatusCircle.color = Color.white;
 				color = (color2 = (iconColor = Color.white));
 			}
+			__instance.CardRenderer.shadowCastingMode = ((!__instance.IsEquipped) ? ShadowCastingMode.On : ShadowCastingMode.Off);
 			__instance.CardRenderer.GetPropertyBlock(propBlock, 2);
-			propBlock.SetColor("_Color", (Color)color);
-			propBlock.SetColor("_Color2", (Color)color2);
-			propBlock.SetColor("_IconColor", (Color)iconColor);
-			propBlock.SetFloat("_Foil", (__instance.CardData.IsFoil || __instance.CardData.Id == "gold" || __instance.CardData.Id == "goblet" || __instance.CardData.Id == "shell") ? 1f : 0f);
+			propBlock.SetColor("_Color", color);
+			propBlock.SetColor("_Color2", color2);
+			propBlock.SetColor("_IconColor", iconColor);
+			float value2 = mo?.ShineStrength ?? ((CardData is Equipable) ? 0.3f : 1f);
+			propBlock.SetFloat("_BigShineStrength", mo?.BigShineStrength ?? ((CardData is Equipable) ? 0f : 1f));
+			propBlock.SetFloat("_ShineStrength", value2);
+			propBlock.SetFloat("_Foil", (mo?.Foil ?? CardData.IsFoil || CardData.Id == "gold" || CardData.Id == "goblet" || CardData.Id == "shell" || CardData is Equipable) ? 1f : 0f);
 			if (__instance.IconRenderer.sprite != null)
 			{
 				propBlock.SetTexture("_IconTex", __instance.IconRenderer.sprite.texture);
@@ -168,12 +187,13 @@ namespace BerryLoaderNS
 				propBlock.SetTexture("_IconTex", SpriteManager.instance.EmptyTexture.texture);
 			}
 			__instance.CardRenderer.SetPropertyBlock(propBlock, 2);
-			__instance.SpecialText.color = (Color)color;
-			__instance.SpecialIcon.color = (Color)iconColor;
-			__instance.IconRenderer.color = (Color)iconColor;
-			__instance.CoinText.color = (Color)color;
-			__instance.CoinIcon.color = (Color)iconColor;
-			__instance.CardNameText.color = (Color)iconColor;
+			__instance.SpecialText.color = color;
+			__instance.SpecialIcon.color = iconColor;
+			__instance.IconRenderer.color = iconColor;
+			__instance.CoinText.color = color;
+			__instance.CoinIcon.color = iconColor;
+			__instance.EquipmentButton.Color = color;
+			__instance.CardNameText.color = iconColor;
 			return false;
 		}
 	}
