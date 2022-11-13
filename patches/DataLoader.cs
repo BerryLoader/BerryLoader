@@ -53,7 +53,7 @@ namespace BerryLoaderNS
 							card.PickupSoundGroup = PickupSoundGroup.Custom;
 							WorldManager.instance.StartCoroutine(ResourceHelper.GetAudioClip(card.Id, Path.Combine(modDir, "Sounds", modcard.audio)));
 						}
-						var tex = new Texture2D(1024, 1024); // TODO: size?
+						var tex = new Texture2D(1024, 1024, TextureFormat.RGBA32, false); // TODO: size?
 						tex.LoadImage(File.ReadAllBytes(Path.Combine(modDir, "Images", modcard.icon)));
 						card.Icon = Sprite.Create(tex, wood.Icon.rect, wood.Icon.pivot);
 						card.MyCardType = EnumHelper.ToCardType(modcard.type);
@@ -111,7 +111,7 @@ namespace BerryLoaderNS
 					mo.Name = modblueprint.nameOverride;
 					bp.NameTerm = modblueprint.nameTerm;
 					bp.Id = modblueprint.id;
-					var tex = new Texture2D(512, 512); // TODO: size?
+					var tex = new Texture2D(512, 512, TextureFormat.RGBA32, false); // TODO: size?
 					tex.LoadImage(File.ReadAllBytes(Path.Combine(modDir, "Images", modblueprint.icon)));
 					bp.Icon = Sprite.Create(tex, wood.Icon.rect, wood.Icon.pivot);
 					bp.BlueprintGroup = EnumHelper.ToBlueprintGroup(modblueprint.group);
@@ -173,7 +173,7 @@ namespace BerryLoaderNS
 					bpinst.gameObject.SetActive(false);
 					ModOverride mo = bpinst.gameObject.AddComponent<ModOverride>();
 					mo.Name = modbooster.name;
-					var tex = new Texture2D(1024, 1024); // TODO: size?
+					var tex = new Texture2D(1024, 1024, TextureFormat.RGBA32, false); // TODO: size?
 					tex.LoadImage(File.ReadAllBytes(Path.Combine(modDir, "Images", modbooster.icon)));
 					bpinst.BoosterpackIcon = Sprite.Create(tex, humble.BoosterpackIcon.rect, humble.BoosterpackIcon.pivot);
 					bpinst.BoosterId = modbooster.id;
