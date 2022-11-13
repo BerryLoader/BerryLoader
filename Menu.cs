@@ -42,17 +42,19 @@ namespace BerryLoaderNS
 		public void Start()
 		{
 			BerryLoader.L.LogInfo("initing screen..");
-			Transform berryText = MonoBehaviour.Instantiate(GameCanvas.instance.MainMenuScreen.GetChild(0).GetChild(0), GameCanvas.instance.MainMenuScreen.GetChild(0));
-			berryText.SetSiblingIndex(1);
-			berryText.GetComponent<TextMeshProUGUI>().text = "(+BerryLoader)";
-			berryText.GetComponent<TextMeshProUGUI>().fontSize = 30;
+			/*Transform berryText = MonoBehaviour.Instantiate(GameCanvas.instance.MainMenuScreen.GetChild(0).GetChild(0).GetChild(1), GameCanvas.instance.MainMenuScreen.GetChild(0).GetChild(0));
+			berryText.SetSiblingIndex(2);
+			berryText.GetChild(0).GetComponent<TextMeshProUGUI>().text = "(+BerryLoader)";
+			berryText.GetChild(0).GetComponent<TextMeshProUGUI>().fontSize = 30;
+			DestroyImmediate(berryText.GetChild(1));*/
+			GameCanvas.instance.MainMenuScreen.GetChild(0).GetChild(0).GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = "(+BerryLoader)";
 
 			ModOptionsScreen = MenuAPI.CreateScreen("Mod Options", versionText: $"v{BerryLoader.VERSION}");
 			DumpScreen = MenuAPI.CreateScreen("Dump Assets");
 
 			var parent = ModOptionsScreen.GetChild(0).GetChild(1);
 
-			menuButton = MenuAPI.CreateButton(GameCanvas.instance.MainMenuScreen.GetChild(0).GetChild(5), "Mod Options", ModOptionsScreen);
+			menuButton = MenuAPI.CreateButton(GameCanvas.instance.MainMenuScreen.GetChild(0).GetChild(4), "Mod Options", ModOptionsScreen);
 			menuButton.transform.SetSiblingIndex(5);
 
 			skipIntroButton = MenuAPI.CreateConfigButton(parent, "Skip Intro", BerryLoader.configSkipIntro);

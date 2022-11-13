@@ -148,10 +148,10 @@ namespace BerryLoaderNS
 				iconColor = mo.IconColor ?? iconColor;
 			}
 			__instance.CombatStatusCircle.color = __instance.CombatCircleColor;
-			__instance.CombatStatusIcon.color = Color.red;
+			//__instance.CombatStatusIcon.color = Color.red;
 			if (__instance.IsHit)
 			{
-				Color color4 = (__instance.CombatStatusCircle.color = (__instance.CombatStatusIcon.color = Color.white));
+				Color color4 = (__instance.CombatStatusCircle.color = /*(__instance.CombatStatusIcon.color =*/ Color.white)/*)*/; // LMAO
 				color = (color2 = (iconColor = Color.white));
 			}
 			__instance.CardRenderer.GetPropertyBlock(propBlock, 2);

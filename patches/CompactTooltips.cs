@@ -29,6 +29,8 @@ namespace BerryLoaderNS
 			}
 		}
 
+		/*
+		// maybe just remove this and pr to betterinfo?
 		[HarmonyPatch(typeof(Combatable), "GetCombatDescription")]
 		[HarmonyPrefix]
 		public static bool CGCD(Combatable __instance, ref string __result)
@@ -39,6 +41,6 @@ namespace BerryLoaderNS
 				return false;
 			}
 			return true;
-		}
+		}*/
 	}
 }

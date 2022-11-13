@@ -24,10 +24,12 @@ namespace BerryLoaderNS
 		}
 
 		[HarmonyPatch(typeof(WorldManager), "Play")]
-		[HarmonyPatch(typeof(WorldManager), "GoToBoard")]
+		//[HarmonyPatch(typeof(WorldManager), "GoToBoard")]
+		[HarmonyPatch(typeof(WorldManager), "CurrentBoard", MethodType.Setter)]
 		[HarmonyPostfix]
 		public static void UpdatePresence1()
 		{
+			BerryLoader.L.LogInfo($"updating presence: {WorldManager.instance.CurrentBoard.Id}");
 			if (DiscordAPI.StartTimestamp == null)
 				DiscordAPI.StartTimestamp = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 			DiscordAPI.UpdateActivity($"{DiscordAPI.GetBoardString(WorldManager.instance.CurrentBoard.Id)} | {DiscordAPI.GetMoon()} {WorldManager.instance.CurrentMonth}");

@@ -219,17 +219,5 @@ namespace BerryLoaderNS
 				validator.Check();
 			}
 		}
-
-		// this patch removes the following lines from VerifyAllCardsReferenced, since the file doesnt exist, and therefore throws an error:
-		// string contents = "var DATA = " + JsonUtility.ToJson((object)graph) + ";";
-		// File.WriteAllText(Path.GetFullPath(Path.Combine(Application.dataPath, "../../", "visualization", "data.js")), contents);
-		[HarmonyPatch(typeof(GameDataValidator), "VerifyAllCardsReferenced")]
-		[HarmonyTranspiler]
-		public static IEnumerable<CodeInstruction> VACR(IEnumerable<CodeInstruction> instructions)
-		{
-			var fuck = instructions.ToList();
-			fuck.RemoveRange(fuck.Count - 17, 16);
-			return fuck;
-		}
 	}
 }

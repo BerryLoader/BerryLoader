@@ -13,7 +13,7 @@ namespace BerryLoaderNS
 			__result.gameObject.SetActive(true);
 		}
 
-		[HarmonyPatch(typeof(WorldManager), "CreateCard", new Type[] { typeof(Vector3), typeof(CardData), typeof(bool), typeof(bool), typeof(bool) })]
+		[HarmonyPatch(typeof(WorldManager), "CreateCard", new Type[] { typeof(Vector3), typeof(CardData), typeof(bool), typeof(bool), typeof(bool), typeof(bool) })]
 		[HarmonyPostfix]
 		static void WMCC(ref CardData __result)
 		{

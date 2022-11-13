@@ -4,7 +4,6 @@ namespace BerryLoaderNS
 {
 	public static partial class Patches
 	{
-
 		[HarmonyPatch(typeof(GameScreen), "Update")]
 		[HarmonyPostfix]
 		static void DisablePauseText(GameScreen __instance)

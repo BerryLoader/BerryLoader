@@ -6,7 +6,7 @@ namespace BerryLoaderNS
 	{
 		public static GameBoard CreateBoard(string boardId)
 		{
-			GameBoard board = MonoBehaviour.Instantiate(WorldManager.instance.Boards[0]);
+			GameBoard board = MonoBehaviour.Instantiate(WorldManager.instance.Boards[1]);
 			board.Id = boardId;
 			board.transform.position = new Vector3((WorldManager.instance.Boards.Count - 1) * 100, -0.528f, 0);
 			WorldManager.instance.Boards.Add(board);

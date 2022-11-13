@@ -13,7 +13,8 @@ namespace BerryLoaderNS
 		public static Dictionary<string, string> BoardLookup = new Dictionary<string, string>()
 		{
 			{"main", "On the mainland"},
-			{"island", "On the island"}
+			{"island", "On the island"},
+			{"forest", "In the dark forest"}
 		};
 
 		public static void Init()
