@@ -68,7 +68,10 @@ namespace BerryLoaderNS
 			foreach (var plugin in berryPlugins)
 			{
 				L.LogInfo($"found BIE plugin: {plugin.Info.Metadata.Name} | Directory: {Directory.GetParent(plugin.Info.Location)}");
+				// register mod directory as place where cards, blueprints, etc. can be loaded from
 				modDirs.Add(Directory.GetParent(plugin.Info.Location).ToString());
+
+				// register CardData scripts and StatusEffects
 				var ass = plugin.GetType().Assembly;
 				foreach (var t in ReflectionHelper.GetSafeTypes(ass))
 				{

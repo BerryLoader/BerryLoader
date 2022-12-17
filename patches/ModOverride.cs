@@ -159,7 +159,7 @@ namespace BerryLoaderNS
 			if (mo != null)
 			{
 				color = mo.Color ?? color;
-				iconColor = mo.Color2 ?? iconColor;
+				color2 = mo.Color2 ?? color2;
 				iconColor = mo.IconColor ?? iconColor;
 			}
 			__instance.CombatStatusCircle.color = __instance.CombatCircleColor;

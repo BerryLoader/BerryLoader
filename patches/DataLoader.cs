@@ -178,6 +178,7 @@ namespace BerryLoaderNS
 					bpinst.BoosterpackIcon = Sprite.Create(tex, humble.BoosterpackIcon.rect, humble.BoosterpackIcon.pivot);
 					bpinst.BoosterId = modbooster.id;
 					bpinst.MinAchievementCount = modbooster.minAchievementCount;
+					bpinst.Cost = modbooster.cost;
 					bpinst.CardBags.Clear();
 					foreach (var cb in modbooster.cardBags)
 					{
