@@ -117,7 +117,10 @@ namespace BerryLoaderNS
 					bp.Id = modblueprint.id;
 					bp.Icon = ResourceHelper.GetSprite(Path.Combine(modDir, "Images", modblueprint.icon));
 					bp.BlueprintGroup = EnumHelper.ToBlueprintGroup(modblueprint.group);
-					//bp.StackPostText = modblueprint.stackText; // gone?
+					bp.HideFromIdeasTab = modblueprint.hideFromIdeasTab;
+					bp.HideFromCardopedia = modblueprint.hideFromCardopedia;
+					bp.IsInvention = modblueprint.isInvention;
+					bp.NeedsExactMatch = modblueprint.needsExactMatch;
 					bp.Subprints = new List<Subprint>();
 					for (int i = 0; i < modblueprint.subprints.Count; i++)
 					{

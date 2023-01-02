@@ -41,6 +41,10 @@ namespace BerryLoaderNS
 		public int value = 1; // default? no clue if it works or not
 		public string icon;
 		public string group;
+		public bool hideFromIdeasTab = false;
+		public bool hideFromCardopedia = false;
+		public bool isInvention = false;
+		public bool needsExactMatch = true;
 		public List<ModSubprint> subprints;
 	}
 
