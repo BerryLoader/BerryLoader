@@ -51,11 +51,15 @@ namespace BerryLoaderNS
 						if (modcard.audio != null)
 						{
 							card.PickupSoundGroup = PickupSoundGroup.Custom;
-							WorldManager.instance.StartCoroutine(ResourceHelper.GetAudioClip(card.Id, Path.Combine(modDir, "Sounds", modcard.audio)));
+							// the PickupSound is assigned in a WorldManager.CreateCard patch (patches/WMCreate.cs)
+							// otherwise since this loading is technically async it can cause race conditions and its
+							// probably just better to load (possibly large) audio files asynchronously
+							WorldManager.instance.StartCoroutine(ResourceHelper.GetAudioClip(Path.Combine(modDir, "Sounds", modcard.audio), (AudioClip ac) =>
+							{
+								ResourceHelper.AudioClips.Add(card.Id, ac);
+							}));
 						}
-						var tex = new Texture2D(1024, 1024, TextureFormat.RGBA32, false); // TODO: size?
-						tex.LoadImage(File.ReadAllBytes(Path.Combine(modDir, "Images", modcard.icon)));
-						card.Icon = Sprite.Create(tex, wood.Icon.rect, wood.Icon.pivot);
+						card.Icon = ResourceHelper.GetSprite(Path.Combine(modDir, "Images", modcard.icon));
 						card.MyCardType = EnumHelper.ToCardType(modcard.type);
 						card.gameObject.SetActive(false);
 						if (!modcard.script.Equals(""))
@@ -111,9 +115,7 @@ namespace BerryLoaderNS
 					mo.Name = modblueprint.nameOverride;
 					bp.NameTerm = modblueprint.nameTerm;
 					bp.Id = modblueprint.id;
-					var tex = new Texture2D(512, 512, TextureFormat.RGBA32, false); // TODO: size?
-					tex.LoadImage(File.ReadAllBytes(Path.Combine(modDir, "Images", modblueprint.icon)));
-					bp.Icon = Sprite.Create(tex, wood.Icon.rect, wood.Icon.pivot);
+					bp.Icon = ResourceHelper.GetSprite(Path.Combine(modDir, "Images", modblueprint.icon));
 					bp.BlueprintGroup = EnumHelper.ToBlueprintGroup(modblueprint.group);
 					//bp.StackPostText = modblueprint.stackText; // gone?
 					bp.Subprints = new List<Subprint>();
@@ -173,9 +175,7 @@ namespace BerryLoaderNS
 					bpinst.gameObject.SetActive(false);
 					ModOverride mo = bpinst.gameObject.AddComponent<ModOverride>();
 					mo.Name = modbooster.name;
-					var tex = new Texture2D(1024, 1024, TextureFormat.RGBA32, false); // TODO: size?
-					tex.LoadImage(File.ReadAllBytes(Path.Combine(modDir, "Images", modbooster.icon)));
-					bpinst.BoosterpackIcon = Sprite.Create(tex, humble.BoosterpackIcon.rect, humble.BoosterpackIcon.pivot);
+					bpinst.BoosterpackIcon = ResourceHelper.GetSprite(Path.Combine(modDir, "Images", modbooster.icon));
 					bpinst.BoosterId = modbooster.id;
 					bpinst.MinAchievementCount = modbooster.minAchievementCount;
 					bpinst.Cost = modbooster.cost;
