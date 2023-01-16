@@ -62,7 +62,8 @@ namespace BerryLoaderNS
 	public class ModBoosterpack
 	{
 		public string id;
-		public string name;
+		public string nameOverride;
+		public string nameTerm;
 		public string icon;
 		public int minAchievementCount;
 		public int cost;

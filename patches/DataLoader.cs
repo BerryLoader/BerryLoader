@@ -177,7 +177,8 @@ namespace BerryLoaderNS
 					*/
 					bpinst.gameObject.SetActive(false);
 					ModOverride mo = bpinst.gameObject.AddComponent<ModOverride>();
-					mo.Name = modbooster.name;
+					mo.Name = modbooster.nameOverride;
+					bpinst.NameTerm = modbooster.nameTerm;
 					bpinst.BoosterpackIcon = ResourceHelper.GetSprite(Path.Combine(modDir, "Images", modbooster.icon));
 					bpinst.BoosterId = modbooster.id;
 					bpinst.MinAchievementCount = modbooster.minAchievementCount;
