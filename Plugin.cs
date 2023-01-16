@@ -16,7 +16,7 @@ namespace BerryLoaderNS
 	[BepInProcess("Stacklands.exe")]
 	public class BerryLoader : BaseUnityPlugin
 	{
-		public const string VERSION = "0.7.0";
+		public const string VERSION = "0.8.0";
 		public static BepInEx.Logging.ManualLogSource L;
 		public static BerryLoader instance;
 
