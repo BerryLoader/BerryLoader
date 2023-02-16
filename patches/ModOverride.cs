@@ -174,6 +174,20 @@ namespace BerryLoaderNS
 			propBlock.SetColor("_Color", color);
 			propBlock.SetColor("_Color2", color2);
 			propBlock.SetColor("_IconColor", iconColor);
+			Texture2D texture2D = null;
+			if (CardData is ResourceChest)
+			{
+				texture2D = SpriteManager.instance.ChestIconSecondary.texture;
+			}
+			else if (CardData is ResourceMagnet)
+			{
+				texture2D = SpriteManager.instance.MagnetIconSecondary.texture;
+			}
+			propBlock.SetFloat("_HasSecondaryIcon", (texture2D != null) ? 1f : 0f);
+			if (texture2D != null)
+			{
+				propBlock.SetTexture("_SecondaryTex", texture2D);
+			}
 			float value2 = mo?.ShineStrength ?? ((CardData is Equipable) ? 0.3f : 1f);
 			propBlock.SetFloat("_BigShineStrength", mo?.BigShineStrength ?? ((CardData is Equipable) ? 0f : 1f));
 			propBlock.SetFloat("_ShineStrength", value2);
